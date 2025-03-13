@@ -170,7 +170,7 @@ module: ietf-network-inventory-sw-ext
        +--ro status?              identityref
        +--ro installation-time?   yang:date-and-time
        +--ro activation-time?     yang:date-and-time
-       {::include ./ietf-ni-location-tree.txt}
+       {::include ./ietf-network-inventory-sw-ext-tree.txt}
 ~~~~~~~~~~
 
 {: #full-tree title="YANG Tree of Software Extensions" artwork-align="center"}
@@ -214,7 +214,7 @@ The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
 
 ~~~~~~~~~~
 <CODE BEGINS> file "ietf-network-inventory-sw-ext@2024-10-17.yang"
-{::include-fold ./etf-network-inventory-sw-ext.yang}
+{::include-fold ./ietf-network-inventory-sw-ext.yang}
 <CODE ENDS>
 ~~~~~~~~~~
 
