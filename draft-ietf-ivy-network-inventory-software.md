@@ -33,9 +33,9 @@ author:
 
 contributor:
 -
-    name: 
-    org: 
-    email: 
+    name: Yao Zhao
+    org: Huawei
+    email: zhaoyao.zhaoyao@huawei.com
 
 normative:
 
