@@ -126,7 +126,7 @@ The base network inventory model supports the software versions of
       software information on the NE to facilitate software compatibility
       check.
 
-Figure {{fig-ni-sw-mod-relation}} depicts the relationship between
+{{fig-ni-sw-mod-relation}} depicts the relationship between
       the Software Extension model and other models. The Software Extension
       network inventory model enhances the model defined in the base network
       inventory model with more software specific attributes.
@@ -148,34 +148,20 @@ Figure {{fig-ni-sw-mod-relation}} depicts the relationship between
  | supply unit | |  SW patch   |  |             |
  +-------------+ +-------------+  +-------------+
 ~~~~
-
 {: #fig-ni-sw-mod-relation title="Relationship of SW Extension Model to Other Inventory Models"}
 
 
 
 # Model Overview
 
-The tree diagram {{full-tree}} provides an overview of the data model for "ietf-network-inventory-sw-ext"
+The tree diagram in {{full-tree}} provides an overview of the data model for "ietf-network-inventory-sw-ext"
       module.
 
 ~~~~~~~~~~
-module: ietf-network-inventory-sw-ext
-  augment /nwi:network-inventory/nwi:network-elements
-            /nwi:network-element:
-    +--ro software-attributes
-       +--ro status?              identityref
-       +--ro installation-time?   yang:date-and-time
-       +--ro activation-time?     yang:date-and-time
-  augment /nwi:network-inventory/nwi:network-elements
-            /nwi:network-element/nwi:components/nwi:component:
-    +--ro software-module-attributes
-       +--ro status?              identityref
-       +--ro installation-time?   yang:date-and-time
-       +--ro activation-time?     yang:date-and-time
-       {::include ./ietf-network-inventory-sw-ext-tree.txt}
+{::include-fold ./ietf-network-inventory-sw-ext.tree}
 ~~~~~~~~~~
+{: #full-tree title="YANG Tree of Software Extensions" artwork-align="center"}	  
 
-{: #full-tree title="YANG Tree of Software Extensions" artwork-align="center"}
 
 # Non-physical Network Elements
 
@@ -214,11 +200,11 @@ Similar to the common inventory attributes of NEs, the common
 The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
    {{!I-D.ietf-ivy-network-inventory-yang}}.
 
-~~~~~~~~~~
-<CODE BEGINS> file "ietf-network-inventory-sw-ext@2024-10-17.yang"
-{::include-fold ./ietf-network-inventory-sw-ext.yang}
-<CODE ENDS>
-~~~~~~~~~~
+~~~~ yang
+{::include-fold ./ietf-network-inventory-sw-ext.yang.yang}
+~~~~
+{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext.yangy@2024-10-17.yang"}   
+
 
 # Security Considerations
 
@@ -279,9 +265,9 @@ Reference:  RFC XXXX
 --- back
 
 # Acknowledgments
-
 {:numbered="false"}
 
 The authors would like to thank Prasenjit Manna,Phil Bedard, Diego R.
       Lopez, Italo Busi, and many others for their helpful comments and
       suggestions.
+
