@@ -1,3 +1,4 @@
+---
 title: "A YANG Network Data Model of Network Inventory Software Extensions"
 abbrev: "Network Inventory Software"
 category: std
