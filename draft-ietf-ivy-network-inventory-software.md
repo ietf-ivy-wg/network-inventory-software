@@ -201,9 +201,9 @@ The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
    {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~ yang
-{::include-fold ./ietf-network-inventory-sw-ext.yang.yang}
+{::include-fold ./ietf-network-inventory-sw-ext.yang}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext.yangy@2024-10-17.yang"}   
+{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext@2024-10-17.yang"}   
 
 
 # Security Considerations
