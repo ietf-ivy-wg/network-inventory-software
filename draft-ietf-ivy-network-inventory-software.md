@@ -16,18 +16,19 @@ keyword:
   - Automation
   - Network Inventory
   - Network Operation
-    author:
+
+author:
   - name: Bo Wu
     org: Huawei
     email: lana.wubo@huawei.com
-  - fullname: Cheng Zhou
-    organization: China Mobile
+  - name: Cheng Zhou
+    org: China Mobile
     email: zhouchengyjy@chinamobile.com
-  - fullname: Qin Wu
-    organization: Huawei
+  - name: Qin Wu
+    org: Huawei
     email: bill.wu@huawei.com
-  - fullname: Mohamed Boucadair
-    organization: Orange
+  - name: Mohamed Boucadair
+    org: Orange
     email: mohamed.boucadair@orange.com
 
 contributor:
