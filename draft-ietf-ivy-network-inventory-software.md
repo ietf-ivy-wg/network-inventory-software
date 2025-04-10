@@ -32,6 +32,10 @@ author:
     email: mohamed.boucadair@orange.com
 
 contributor:
+-
+    name: 
+    org: 
+    email: 
 
 normative:
 
@@ -160,8 +164,7 @@ The tree diagram in {{full-tree}} provides an overview of the data model for "ie
 ~~~~~~~~~~
 {::include-fold ./ietf-network-inventory-sw-ext.tree}
 ~~~~~~~~~~
-{: #full-tree title="YANG Tree of Software Extensions" artwork-align="center"}	  
-
+{: #full-tree title="YANG Tree of Software Extensions" artwork-align="center"}
 
 # Non-physical Network Elements
 
@@ -203,7 +206,7 @@ The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
 ~~~~ yang
 {::include-fold ./ietf-network-inventory-sw-ext.yang}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext@2024-10-17.yang"}   
+{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext@2024-10-17.yang"}
 
 
 # Security Considerations
