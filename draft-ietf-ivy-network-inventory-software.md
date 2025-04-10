@@ -9,7 +9,7 @@ number:
 date:
 consensus: true
 v: 3
-area: "Operations and Management"
+area: ""
 workgroup: "Network Inventory YANG"
 keyword:
 
