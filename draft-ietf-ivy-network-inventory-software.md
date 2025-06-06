@@ -213,13 +213,12 @@ The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
 
 This section uses the template described in {{Section 3.7 of ?I-D.ietf-netmod-rfc8407bis}}.
 
-The YANG module specified in this document defines schema for data
-that is designed to be accessed via network management protocols such
- as NETCONF {{!RFC6241}} or RESTCONF {{!RFC8040}}.  The lowest NETCONF layer
-is the secure transport layer, and the mandatory-to-implement secure
-transport is Secure Shell (SSH) {{!RFC6242}}.  The lowest RESTCONF layer
-is HTTPS, and the mandatory-to-implement secure transport is TLS
- {{!RFC8446}}.
+The "ietf-network-inventory-sw-ext" YANG module defines a data model that is 
+designed to be accessed via YANG-based management protocols, such as
+NETCONF NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}}. These YANG-based management
+protocols (1) have to use a secure transport layer
+(e.g., SSH {{?RFC4252}}, TLS {{?RFC8446}}, and QUIC {{?RFC9000}}) and (2) have
+to use mutual authentication.
 
 The Network Configuration Access Control Model (NACM) {{!RFC8341}}
 provides the means to restrict access for particular NETCONF or
@@ -227,21 +226,24 @@ RESTCONF users to a preconfigured subset of all available NETCONF or
 RESTCONF protocol operations and content.
 
 There are a number of data nodes defined in this YANG module that are
-writable/creatable/deletable (i.e., config true, which is the
-default).  These data nodes may be considered sensitive or vulnerable
-in some network environments.  Write operations (e.g., edit-config)
-and delete operations to these data nodes without proper protection
-or authentication can have a negative effect on network operations.
-Specifically, the following subtrees and data nodes have particular
-sensitivities/vulnerabilities:
+writable/creatable/deletable (i.e., "config true", which is the
+default).  All writable data nodes are likely to be sensitive or
+vulnerable in some network environments.  Write
+operations (e.g., edit-config) and delete operations to these data
+nodes without proper protection or authentication can have a negative
+effect on network operations.  The following subtrees and data nodes
+have particular sensitivities/vulnerabilities:
+* TBC
 
 Some of the readable data nodes in this YANG module may be considered
 sensitive or vulnerable in some network environments.  It is thus
 important to control read access (e.g., via get, get-config, or
-notification) to these data nodes.  Specifically, the following
-subtrees and data nodes have particular sensitivities/vulnerabilities:
+notification) to these data nodes. Specifically, the following
+subtrees and data nodes have particular sensitivities/
+vulnerabilities:
 
-Note: To be completed.
+* TBC
+
 
 # IANA Considerations
 
