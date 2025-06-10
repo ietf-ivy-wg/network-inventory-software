@@ -136,21 +136,21 @@ The base network inventory model supports the software versions of
       inventory model with more software specific attributes.
 
 ~~~~ ascii-art
-   +-------------------------+
-   |                         |
-   | Base Network Inventory  |
-   |                         |
-   +------------+------------+
-                |
-        +-------+-------+
-        |               |
- +------V------+ +------V------+  +-------------+
- |             | |             |  |             |
- | Hardware    | |  Software   |  |             |
- | Extensions  | |  Extensions |  | Entitlement |
- | e.g. Power  | |  e.g.       |  |             |
- | supply unit | |  SW patch   |  |             |
- +-------------+ +-------------+  +-------------+
++----------------------+
+|                      |
+|Base Network Inventory|
+|                      |
++----------^-----------+
+           |
+           |
+           |
+           |
++----------^-----------+
+|                      |
+|  Software Extensions |
+|    e.g.,SW patch     |
+|                      |
++----------------------+
 ~~~~
 {: #fig-ni-sw-mod-relation title="Relationship of SW Extension Model to Other Inventory Models"}
 
@@ -213,7 +213,7 @@ The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
 
 This section uses the template described in {{Section 3.7 of ?I-D.ietf-netmod-rfc8407bis}}.
 
-The "ietf-network-inventory-sw-ext" YANG module defines a data model that is 
+The "ietf-network-inventory-sw-ext" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
 NETCONF NETCONF {{?RFC6241}} or RESTCONF {{?RFC8040}}. These YANG-based management
 protocols (1) have to use a secure transport layer
