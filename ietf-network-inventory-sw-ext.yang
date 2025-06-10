@@ -67,7 +67,8 @@ module ietf-network-inventory-sw-ext {
        support network protocols and functions, e.g., router,
        firewall, and controller, which can reside in any network or
        compute devices, such as a server in Data Center (DC),
-       server-based virtual machine (VM), or server-based container.";
+       server-based virtual machine (VM), or server-based
+       container.";
   }
 
   identity ne-software {
