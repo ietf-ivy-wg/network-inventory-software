@@ -199,8 +199,8 @@ Similar to the common inventory attributes of NEs, the common
       include a routing protocol package
       (e.g., " foo-rt-protocol-suite"), or a firmware module for a
       line card (e.g., " foo-lc-fw-21.5.3").
-  
-  If more detailed installation and activation
+
+If more detailed installation and activation
       information is needed—such as whether a component is active, pending-reboot,
  or rollback-eligible, along with its install time or activation
  time stamp, the extension attributes of software components
