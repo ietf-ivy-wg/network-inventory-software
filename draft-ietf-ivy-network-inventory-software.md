@@ -43,11 +43,12 @@ informative:
 
 --- abstract
 
-The base Network Inventory YANG model defines the physical network
-      elements (NEs) and hardware components of NEs. This document extends the
-      base Network Inventory model for non-physical NEs (e.g., controllers,
-      virtual routers, virtual firewalls) and software components (e.g.,
-      platform operating system (OS), software-patch).
+This document extends the base Network Inventory YANG model to support
+ non-physical network elements (NEs), such as controllers, virtual
+ routers, and virtual firewalls, as well as software components
+ like platform operating systems and software modules. In addition to
+ the software revisions and patches already defined in the base model,
+ this extension introduces software status and time stamp information.
 
 --- middle
 
@@ -55,7 +56,7 @@ The base Network Inventory YANG model defines the physical network
 
 The Network Inventory consists of the physical and non-physical
       network elements (NEs), hardware components, firmware components, and
-      software components on the a managed network domain. The non-physical
+      software components on a managed network domain. The non-physical
       network elements (NEs) are network devices that support network
       protocols and functions, e.g., routers, firewalls, and controllers,
       which can reside in any network or compute devices, such as servers in
@@ -75,7 +76,7 @@ The management of non-physical NE and software components information
       inventory attributes of the base network inventory model, this document
       also adds some software-specific attributes of non-physical NEs (such as
       controllers, virtual routers, and virtual firewalls) and software
-      components (such as operating system, software patches, BIOS, and boot
+      components (such as operating system, software modules, BIOS, and boot
       loader).
 
 The Network Inventory software extension model is classified as a
@@ -131,7 +132,7 @@ The base network inventory model supports the software versions of
       check.
 
 {{fig-ni-sw-mod-relation}} depicts the relationship between
-      the Software Extension model and other models. The Software Extension
+      the Software Extension model and the base network inventory model. The Software Extension
       network inventory model enhances the model defined in the base network
       inventory model with more software specific attributes.
 
@@ -148,11 +149,11 @@ The base network inventory model supports the software versions of
 +----------^-----------+
 |                      |
 |  Software Extensions |
-|    e.g.,SW patch     |
+|    e.g.,SW module    |
 |                      |
 +----------------------+
 ~~~~
-{: #fig-ni-sw-mod-relation title="Relationship of SW Extension Model to Other Inventory Models"}
+{: #fig-ni-sw-mod-relation title="Relationship of SW Extension Model to the Base Inventory Model" artwork-align="center"}
 
 
 
@@ -185,17 +186,24 @@ The Network Inventory software extension mode defines some new
 
 # Software components
 
-Software components refer to the softwares installed on the NE, such
-      as operating system, software patches, BIOS, and boot loaders.
+Software components refer to the software installed on the NE, such
+      as operating system, software modules, BIOS, and boot loaders.
 
 Similar to the common inventory attributes of NEs, the common
-      attributes of software components (such as software version, patch
-      versions, product name, and serial number) are also applicable to
-      software components. For software and patch versions, the base inventory
+      attributes of software components (such as software revisions, patch
+      revisions, product name, and serial number) are also applicable to
+      software components. For software revisions and patch revisions, the base inventory
       (Section 4 of {{!I-D.ietf-ivy-network-inventory-yang}})
-      defines the "leaf" of "software-rev" and the "leaf-list" of
-      "software-patch-rev". If more detailed installation and activation
-      information is needed, the extension attributes of software components
+      defines the "list" of "software-rev" and the "list" of
+      "patch". For example, on a router, software components may
+      include a routing protocol package
+      (e.g., " foo-rt-protocol-suite"), or a firmware module for a
+      line card (e.g., " foo-lc-fw-21.5.3").
+  
+  If more detailed installation and activation
+      information is needed—such as whether a component is active, pending-reboot,
+ or rollback-eligible, along with its install time or activation
+ time stamp, the extension attributes of software components
       can be used.
 
 # YANG Data model for Network Inventory Software Extensions
@@ -206,7 +214,7 @@ The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
 ~~~~ yang
 {::include-fold ./ietf-network-inventory-sw-ext.yang}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext@2024-10-17.yang"}
+{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext@2025-10-20.yang"}
 
 
 # Security Considerations
@@ -225,16 +233,6 @@ provides the means to restrict access for particular NETCONF or
 RESTCONF users to a preconfigured subset of all available NETCONF or
 RESTCONF protocol operations and content.
 
-There are a number of data nodes defined in this YANG module that are
-writable/creatable/deletable (i.e., "config true", which is the
-default).  All writable data nodes are likely to be sensitive or
-vulnerable in some network environments.  Write
-operations (e.g., edit-config) and delete operations to these data
-nodes without proper protection or authentication can have a negative
-effect on network operations.  The following subtrees and data nodes
-have particular sensitivities/vulnerabilities:
-* TBC
-
 Some of the readable data nodes in this YANG module may be considered
 sensitive or vulnerable in some network environments.  It is thus
 important to control read access (e.g., via get, get-config, or
@@ -242,7 +240,13 @@ notification) to these data nodes. Specifically, the following
 subtrees and data nodes have particular sensitivities/
 vulnerabilities:
 
-* TBC
+* "/nwi:network-elements/network-element/software-rev"
+
+  This subtree reports the software information for all the network
+  elements and their hardware components deployed within the network
+  as well as of the software modules being active on these network
+  elements and components. This may reveal software versions or
+  unpatched vulnerabilities.
 
 
 # IANA Considerations
@@ -268,6 +272,25 @@ Reference:  RFC XXXX
 ~~~~
 
 --- back
+
+# Examples of Software Attributes
+
+This appendix provides some examples of software attributes
+ implementations and how they can be modeled using the
+ “ietf-network-inventory-sw-ext” module defined.
+
+This appendix illustrates, by means of two typical scenarios, how to
+ populate the software-specific nodes defined in
+ ietf-network-inventory-sw-ext and explains the common values that can be used.
+
+Scenario 1: Whole-device base software (example-os) plus hot patches
+ (P3 already activated, P4 installed but not yet activated).
+
+Scenario 2: Line-card programmable forwarding image
+ (example-fpga-image) plus its patch
+ (2.1.0.P1 installed and awaiting activation).
+
+{::include-fold ./software-example.json}
 
 # Acknowledgments
 {:numbered="false"}
