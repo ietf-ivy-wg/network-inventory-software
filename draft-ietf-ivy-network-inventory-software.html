@@ -16,25 +16,24 @@
       virtual routers, virtual firewalls) and software components (e.g.,
       platform operating system (OS), software-patch). 
     " name="description">
-<meta content="xml2rfc 3.28.1" name="generator">
+<meta content="xml2rfc 3.31.0" name="generator">
 <meta content="Automation" name="keyword">
 <meta content="Network Inventory" name="keyword">
 <meta content="Network Operation" name="keyword">
 <meta content="draft-ietf-ivy-network-inventory-software-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.28.1
-    Python 3.12.10
+  xml2rfc 3.31.0
+    Python 3.12.12
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.1.0
     Jinja2 3.1.6
     lxml 5.3.1
-    platformdirs 4.3.8
+    platformdirs 4.5.0
     pycountry 24.6.1
     PyYAML 6.0.2
-    requests 2.32.3
-    setuptools 80.9.0
-    wcwidth 0.2.13
+    requests 2.32.5
+    wcwidth 0.2.14
 -->
 <link href="draft-ietf-ivy-network-inventory-software.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1053,11 +1052,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Network Inventory Software</td>
-<td class="right">June 2025</td>
+<td class="right">October 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Wu, et al.</td>
-<td class="center">Expires 12 December 2025</td>
+<td class="center">Expires 23 April 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1070,12 +1069,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ivy-network-inventory-software-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-10" class="published">10 June 2025</time>
+<time datetime="2025-10-20" class="published">20 October 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-12-12">12 December 2025</time></dd>
+<dd class="expires"><time datetime="2026-04-23">23 April 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1136,7 +1135,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 December 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 April 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1498,7 +1497,7 @@ module ietf-network-inventory-sw-ext {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-06-10 {
+  revision 2025-10-20 {
     description
       "Initial version";
     reference
@@ -1509,68 +1508,53 @@ module ietf-network-inventory-sw-ext {
   identity ne-nonphysical {
     base nwi:ne-type;
     description
-      "A non-physical network element (NE) is a network device that
-       support network protocols and functions, e.g., router,
-       firewall, and controller, which can reside in any network or
-       compute devices, such as a server in Data Center (DC),
-       server-based virtual machine (VM), or server-based
-       container.";
+      "Any network element implemented purely in software.
+       It performs protocol or forwarding functions but
+       does not correspond to a distinguishable hardware
+       chassis. It can be hosted on a bare-metal server,
+       VM, container, or cloud instance.";
   }
 
   identity ne-software {
     base ne-nonphysical;
     description
-      "A software NE refers to a a network device residing in any
-       network or compute devices, such as a physical server
-       (or 'bare metal') in DC. Examples of software NEs are
-       network controllers.";
+      "Software NE that runs directly on a host OS
+       (a.k.a. bare-metal deployment) or hypervisor.
+       Examples of software NEs are network controllers.";
   }
 
   identity ne-virtual {
     base ne-nonphysical;
     description
-      "A virtual NE refers to a network device residing within
-       server-based Virtual Machine (VM) implementing a virtual
-       network function (VNF). Examples of virtual NEs are
-       virtual routers, virtual firewalls.";
+      "Virtual NE instantiated inside a virtual-machine
+       (VM). Provides virtual network function (VNF) implementations
+       such as vRouter, vFirewall, vPE.";
   }
 
   identity ne-container {
     base ne-nonphysical;
     description
-      "A container NE refers to a network device residing within
-       server-based container implementing a Containerized
-       network function (CNF).";
+      "Container NE packaged as CNF (Containerised Network
+       Function). Runs under Docker/K8s.";
   }
 
   identity software-component {
     base nwi:non-hardware-component-class;
     description
-      "Base identity for software components in a managed
-       device.";
+      "Base identity for software components in a managed device.";
   }
 
   identity operating-system {
     base software-component;
     description
-      "OS software type.";
-  }
-
-  identity operating-system-patch {
-    base software-component;
-    description
-      "An operating system update - which should be a subcomponent
-       of the `operating-system` running on a component. A patch is
-       defined to be a set of software changes that are atomically
-       installed (and uninstalled) together. ";
+      "Operating system software type.";
   }
 
   identity bios {
     base software-component;
     description
-      "Legacy BIOS or UEFI firmware interface responsible for
-       initializing hardware components and first stage boot
-       loader.";
+      "BIOS or UEFI firmware image responsible for hardware
+       initialisation and secure boot.";
   }
 
   identity boot-loader {
@@ -1583,9 +1567,8 @@ module ietf-network-inventory-sw-ext {
   identity software-module {
     base software-component;
     description
-      "A base identity for software modules installed and/or
-       running on the device.  Modules include user-space programs
-       and kernel modules that provide specific functionality.";
+      "Installable unit smaller than a full OS image,
+       e.g. feature package.";
   }
 
   identity software-status {
@@ -1607,7 +1590,7 @@ module ietf-network-inventory-sw-ext {
 
   grouping software-info-grouping {
     description
-      "Specific attributes applicable to Software.";
+      "Specific attributes applicable to software.";
     leaf status {
       type identityref {
         base software-status;
@@ -1618,46 +1601,54 @@ module ietf-network-inventory-sw-ext {
     leaf installation-time {
       type yang:date-and-time;
       description
-        "Date and time the current revision last changed.";
+        "Time when the software or patch revision was
+         first installed.";
     }
     leaf activation-time {
       type yang:date-and-time;
       description
-        "Date and time the current revision last changed.";
+        "Time when the currently installed revision became active
+         (i.e., was rebooted into).";
     }
   }
 
   /* Main blocks */
 
   augment "/nwi:network-inventory/nwi:network-elements"
-        + "/nwi:network-element" {
+        + "/nwi:network-element/nwi:software-rev" {
     description
-      "Augment network element (NE) attributes.";
-    container software-attributes {
-      when "derived-from-or-self(../nwi:ne-type,'ne-software')";
-      config false;
-      description
-        "Container for the attributes applicable only to software
-         Network Elements (NEs).";
-      uses software-info-grouping;
-    }
+      "Adds installation-/activation-time, status, etc. to the base
+       NE software revision.";
+    uses software-info-grouping;
+  }
+
+  augment "/nwi:network-inventory/nwi:network-elements"
+        + "/nwi:network-element/nwi:software-rev/nwi:patch" {
+    description
+      "Adds installation-/activation-time, status, etc. to the patch
+       level.";
+    uses software-info-grouping;
   }
 
   augment "/nwi:network-inventory/nwi:network-elements/"
-        + "nwi:network-element/nwi:components/nwi:component" {
+        + "nwi:network-element/nwi:components/nwi:component/"
+        + "nwi:software-rev" {
     description
-      "Augment software component attributes.";
-    container software-module-attributes {
-      when
-        "derived-from-or-self(../nwi:class,'software-module')";
-      config false;
-      description
-        "This container contains some attributes belong to
-         software modules only.";
-      uses software-info-grouping;
-    }
+      "Extends components, such as line-card/CPU/etc.
+       software revision with timestamp and state information.";
+    uses software-info-grouping;
+  }
+
+  augment "/nwi:network-inventory/nwi:network-elements/"
+        + "nwi:network-element/nwi:components/nwi:component/"
+        + "nwi:software-rev/nwi:patch" {
+    description
+      "Applies the software-info attributes to component-level
+       patches.";
+    uses software-info-grouping;
   }
 }
+
 
 &lt;CODE ENDS&gt;</pre><a href="#section-7-2" class="pilcrow">¶</a>
 </div>
@@ -1741,7 +1732,7 @@ Reference:  RFC XXXX
 <dl class="references">
 <dt id="I-D.ietf-ivy-network-inventory-yang">[I-D.ietf-ivy-network-inventory-yang]</dt>
         <dd>
-<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-06</span>, <time datetime="2025-05-21" class="refDate">21 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-06">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-11</span>, <time datetime="2025-10-14" class="refDate">14 October 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-11">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-11</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3688">[RFC3688]</dt>
         <dd>
