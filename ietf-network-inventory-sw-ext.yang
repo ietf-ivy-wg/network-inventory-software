@@ -52,7 +52,7 @@ module ietf-network-inventory-sw-ext {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-06-10 {
+  revision 2025-10-20 {
     description
       "Initial version";
     reference
@@ -63,68 +63,53 @@ module ietf-network-inventory-sw-ext {
   identity ne-nonphysical {
     base nwi:ne-type;
     description
-      "A non-physical network element (NE) is a network device that
-       support network protocols and functions, e.g., router,
-       firewall, and controller, which can reside in any network or
-       compute devices, such as a server in Data Center (DC),
-       server-based virtual machine (VM), or server-based
-       container.";
+      "Any network element implemented purely in software.
+       It performs protocol or forwarding functions but
+       does not correspond to a distinguishable hardware
+       chassis. It can be hosted on a bare-metal server,
+       VM, container, or cloud instance.";
   }
 
   identity ne-software {
     base ne-nonphysical;
     description
-      "A software NE refers to a a network device residing in any
-       network or compute devices, such as a physical server
-       (or 'bare metal') in DC. Examples of software NEs are
-       network controllers.";
+      "Software NE that runs directly on a host OS
+       (a.k.a. bare-metal deployment) or hypervisor.
+       Examples of software NEs are network controllers.";
   }
 
   identity ne-virtual {
     base ne-nonphysical;
     description
-      "A virtual NE refers to a network device residing within
-       server-based Virtual Machine (VM) implementing a virtual
-       network function (VNF). Examples of virtual NEs are
-       virtual routers, virtual firewalls.";
+      "Virtual NE instantiated inside a virtual-machine
+       (VM). Provides virtual network function (VNF) implementations
+       such as vRouter, vFirewall, vPE.";
   }
 
   identity ne-container {
     base ne-nonphysical;
     description
-      "A container NE refers to a network device residing within
-       server-based container implementing a Containerized
-       network function (CNF).";
+      "Container NE packaged as CNF (Containerised Network
+       Function). Runs under Docker/K8s.";
   }
 
   identity software-component {
     base nwi:non-hardware-component-class;
     description
-      "Base identity for software components in a managed
-       device.";
+      "Base identity for software components in a managed device.";
   }
 
   identity operating-system {
     base software-component;
     description
-      "OS software type.";
-  }
-
-  identity operating-system-patch {
-    base software-component;
-    description
-      "An operating system update - which should be a subcomponent
-       of the `operating-system` running on a component. A patch is
-       defined to be a set of software changes that are atomically
-       installed (and uninstalled) together. ";
+      "Operating system software type.";
   }
 
   identity bios {
     base software-component;
     description
-      "Legacy BIOS or UEFI firmware interface responsible for
-       initializing hardware components and first stage boot
-       loader.";
+      "BIOS or UEFI firmware image responsible for hardware
+       initialisation and secure boot.";
   }
 
   identity boot-loader {
@@ -137,9 +122,8 @@ module ietf-network-inventory-sw-ext {
   identity software-module {
     base software-component;
     description
-      "A base identity for software modules installed and/or
-       running on the device.  Modules include user-space programs
-       and kernel modules that provide specific functionality.";
+      "Installable unit smaller than a full OS image,
+       e.g. feature package.";
   }
 
   identity software-status {
@@ -161,7 +145,7 @@ module ietf-network-inventory-sw-ext {
 
   grouping software-info-grouping {
     description
-      "Specific attributes applicable to Software.";
+      "Specific attributes applicable to software.";
     leaf status {
       type identityref {
         base software-status;
@@ -172,43 +156,51 @@ module ietf-network-inventory-sw-ext {
     leaf installation-time {
       type yang:date-and-time;
       description
-        "Date and time the current revision last changed.";
+        "Time when the software or patch revision was
+         first installed.";
     }
     leaf activation-time {
       type yang:date-and-time;
       description
-        "Date and time the current revision last changed.";
+        "Time when the currently installed revision became active
+         (i.e., was rebooted into).";
     }
   }
 
   /* Main blocks */
 
   augment "/nwi:network-inventory/nwi:network-elements"
-        + "/nwi:network-element" {
+        + "/nwi:network-element/nwi:software-rev" {
     description
-      "Augment network element (NE) attributes.";
-    container software-attributes {
-      when "derived-from-or-self(../nwi:ne-type,'ne-software')";
-      config false;
-      description
-        "Container for the attributes applicable only to software
-         Network Elements (NEs).";
-      uses software-info-grouping;
-    }
+      "Adds installation-/activation-time, status, etc. to the base
+       NE software revision.";
+    uses software-info-grouping;
+  }
+
+  augment "/nwi:network-inventory/nwi:network-elements"
+        + "/nwi:network-element/nwi:software-rev/nwi:patch" {
+    description
+      "Adds installation-/activation-time, status, etc. to the patch
+       level.";
+    uses software-info-grouping;
   }
 
   augment "/nwi:network-inventory/nwi:network-elements/"
-        + "nwi:network-element/nwi:components/nwi:component" {
+        + "nwi:network-element/nwi:components/nwi:component/"
+        + "nwi:software-rev" {
     description
-      "Augment software component attributes.";
-    container software-module-attributes {
-      when
-        "derived-from-or-self(../nwi:class,'software-module')";
-      config false;
-      description
-        "This container contains some attributes belong to
-         software modules only.";
-      uses software-info-grouping;
-    }
+      "Extends components, such as line-card/CPU/etc.
+       software revision with timestamp and state information.";
+    uses software-info-grouping;
+  }
+
+  augment "/nwi:network-inventory/nwi:network-elements/"
+        + "nwi:network-element/nwi:components/nwi:component/"
+        + "nwi:software-rev/nwi:patch" {
+    description
+      "Applies the software-info attributes to component-level
+       patches.";
+    uses software-info-grouping;
   }
 }
+
