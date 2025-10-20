@@ -1,14 +1,26 @@
 
 module: ietf-network-inventory-sw-ext
   augment /nwi:network-inventory/nwi:network-elements
-            /nwi:network-element:
-    +--ro software-attributes
-       +--ro status?              identityref
-       +--ro installation-time?   yang:date-and-time
-       +--ro activation-time?     yang:date-and-time
+            /nwi:network-element/nwi:software-rev:
+    +--ro status?              identityref
+    +--ro installation-time?   yang:date-and-time
+    +--ro activation-time?     yang:date-and-time
   augment /nwi:network-inventory/nwi:network-elements
-            /nwi:network-element/nwi:components/nwi:component:
-    +--ro software-module-attributes
-       +--ro status?              identityref
-       +--ro installation-time?   yang:date-and-time
-       +--ro activation-time?     yang:date-and-time
+            /nwi:network-element/nwi:software-rev/nwi:patch:
+    +--ro status?              identityref
+    +--ro installation-time?   yang:date-and-time
+    +--ro activation-time?     yang:date-and-time
+  augment /nwi:network-inventory/nwi:network-elements
+            /nwi:network-element/nwi:components/nwi:component
+            /nwi:software-rev:
+    +--ro status?              identityref
+    +--ro installation-time?   yang:date-and-time
+    +--ro activation-time?     yang:date-and-time
+  augment /nwi:network-inventory/nwi:network-elements
+            /nwi:network-element/nwi:components/nwi:component
+            /nwi:software-rev/nwi:patch:
+    +--ro status?              identityref
+    +--ro installation-time?   yang:date-and-time
+    +--ro activation-time?     yang:date-and-time
+
+
