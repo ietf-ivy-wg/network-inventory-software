@@ -290,7 +290,9 @@ Scenario 2: Line-card programmable forwarding image
  (example-fpga-image) plus its patch
  (2.1.0.P1 installed and awaiting activation).
 
+
 {::include-fold ./software-example.json}
+
 
 # Acknowledgments
 {:numbered="false"}
