@@ -184,7 +184,7 @@ The Network Inventory software extension mode defines some new
       software attributes, consisting of software status, installation time,
       and activation time.
 
-# Software components
+# Software Components
 
 Software components refer to the software installed on the NE, such
       as operating system, software modules, BIOS, and boot loaders.
@@ -208,7 +208,7 @@ If more detailed installation and activation
 
 # YANG Data model for Network Inventory Software Extensions
 
-The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC6991}},
+The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC9911}},
    {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~ yang
@@ -275,10 +275,6 @@ Reference:  RFC XXXX
 
 # Examples of Software Attributes
 
-This appendix provides some examples of software attributes
- implementations and how they can be modeled using the
- “ietf-network-inventory-sw-ext” module defined.
-
 This appendix illustrates, by means of two typical scenarios, how to
  populate the software-specific nodes defined in
  ietf-network-inventory-sw-ext and explains the common values that can be used.
@@ -290,9 +286,9 @@ Scenario 2: Line-card programmable forwarding image
  (example-fpga-image) plus its patch
  (2.1.0.P1 installed and awaiting activation).
 
-
+~~~~ ascii-art
 {::include-fold ./software-example.json}
-
+~~~~
 
 # Acknowledgments
 {:numbered="false"}
