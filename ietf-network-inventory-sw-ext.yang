@@ -7,7 +7,7 @@ module ietf-network-inventory-sw-ext {
   import ietf-yang-types {
     prefix yang;
     reference
-      "RFC 6991: Common YANG Data Types";
+      "RFC 9911: Common YANG Data Types";
   }
   import ietf-network-inventory {
     prefix nwi;
@@ -33,7 +33,7 @@ module ietf-network-inventory-sw-ext {
     "This YANG module defines a model for network inventory software
      extensions.
 
-     Copyright (c) 2025 IETF Trust and the persons
+     Copyright (c) 2026 IETF Trust and the persons
      identified as authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -52,7 +52,7 @@ module ietf-network-inventory-sw-ext {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2025-10-20 {
+  revision 2026-04-15 {
     description
       "Initial version";
     reference
