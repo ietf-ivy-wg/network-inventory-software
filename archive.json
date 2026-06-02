@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-31T02:30:27.065728+00:00",
+  "timestamp": "2026-06-02T02:37:55.098540+00:00",
   "repo": "ietf-ivy-wg/network-inventory-software",
   "labels": [
     {
@@ -49,7 +49,24 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 3,
+      "id": "I_kwDOOHvlD88AAAABD_WuFg",
+      "title": "Adrian\u2018s review from IVY ML",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-software/issues/3",
+      "state": "OPEN",
+      "author": "lana-wu",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Adrian\u2018s review from IVY ML\n\n===\n\nSection 1.2 bulleting is slightly broken. I think OLD\n   * data node The following\nNEW\n   * data node\n\n The following\nEND\n\n---\n\n1.2\ns/[RFC8340]../ [RFC8340]./\n\n---\n\nUse of BCP14 boilerplate. There doesn't seem to be any use of BCP14 language in the document, so you can/should remove the boilerplate in section 2 and in the main description clause in the YANG model.\n\n---\n\n3.\ns/e.g. /e.g., /  (twice)\n\n---\n\nFigure 1\ns/e.g.,SW/e.g., SW/\n\n---\n\n6.\nYou have a non-ASCII 'smart' character.  \"needed\u00e2\u20ac\u201dsuch\"\n\n---\n\n7. identity ne-software\nProbably expand \"a.k.a.\"\n\n---\n\n7. identity software-module\ns/e.g. /e.g., /\n\n---\n\nI would appreciate some explanation of the two software statuses. \"Installed\" is pretty obvious, but \"Activated\" could use a few words.\n\n---\n\nThe document doesn't include an Operational Considerations section (per draft-ietf-opsawg-rfc5706bis). Inclusion of such a section is not mandatory, but it could be helpful even in a YANG model document that is clearly all about network operations.\n",
+      "createdAt": "2026-06-01T11:33:26Z",
+      "updatedAt": "2026-06-01T11:33:26Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
