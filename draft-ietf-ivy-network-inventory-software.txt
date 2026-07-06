@@ -200,13 +200,16 @@ Table of Contents
    The tree diagram in Figure 2 provides an overview of the data model
    for "ietf-network-inventory-sw-ext" module.
 
-   The model applies software extension attributes at two levels: - NE-
-   level: "software-rev": Describes the main system software revision of
-   the network element, such as the network operating system release of
-   the whole device. - Component-level: "software-rev": Describes the
-   independent software or firmware revision of an individual component,
-   such as a line card software, a line card firmware, or a pluggable
-   software module.
+   The model applies software extension attributes at two levels:
+
+   NE-level  "software-rev": Describes the main system software revision
+      of the network element, such as the network operating system
+      release of the whole device.
+
+   Component-level  "software-rev": Describes the independent software
+      or firmware revision of an individual component, such as a line
+      card software, a line card firmware, or a pluggable software
+      module.
 
        module: ietf-network-inventory-sw-ext
          augment /nwi:network-inventory/nwi:network-elements

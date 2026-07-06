@@ -1366,16 +1366,26 @@ in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>.<a href="#sec
       </h2>
 <p id="section-3-1">The tree diagram in <a href="#full-tree" class="auto internal xref">Figure 2</a> provides an overview of the data model for "ietf-network-inventory-sw-ext"
       module.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The model applies software extension attributes at two levels:
-- NE-level: "software-rev": Describes the main system software
-      revision of the network element, such as the network
-      operating system release of the whole device.
-- Component-level: "software-rev": Describes the independent software
-      or firmware revision of an individual component, such as a line
-      card software, a line card firmware, or a pluggable software module.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">The model applies software extension attributes at two levels:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-3-3">
+        <dt id="section-3-3.1">NE-level</dt>
+        <dd style="margin-left: 1.5em" id="section-3-3.2">
+          <p id="section-3-3.2.1">"software-rev": Describes the main system software
+    revision of the network element, such as the network
+    operating system release of the whole device.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-3-3.3">Component-level</dt>
+        <dd style="margin-left: 1.5em" id="section-3-3.4">
+          <p id="section-3-3.4.1">"software-rev": Describes the independent software
+    or firmware revision of an individual component, such as a line
+    card software, a line card firmware, or a pluggable software module.<a href="#section-3-3.4.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
 <span id="name-yang-tree-of-software-exten"></span><div id="full-tree">
 <figure id="figure-2">
-        <div class="alignCenter art-text artwork" id="section-3-3.1">
+        <div class="alignCenter art-text artwork" id="section-3-4.1">
 <pre>
 module: ietf-network-inventory-sw-ext
   augment /nwi:network-inventory/nwi:network-elements
