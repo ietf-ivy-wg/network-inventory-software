@@ -17,24 +17,25 @@
  the software revisions and patches already defined in the base model,
  this extension introduces software status and time stamp information. 
     " name="description">
-<meta content="xml2rfc 3.32.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="Automation" name="keyword">
 <meta content="Network Inventory" name="keyword">
 <meta content="Network Operation" name="keyword">
 <meta content="draft-ietf-ivy-network-inventory-software-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.32.0
-    Python 3.12.12
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.9.4
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.32.5
-    wcwidth 0.6.0
+    requests 2.33.1
+    wcwidth 0.8.2
 -->
 <link href="draft-ietf-ivy-network-inventory-software.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -301,16 +302,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -330,10 +334,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -344,59 +348,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -434,26 +438,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -469,20 +472,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -518,9 +523,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -530,17 +535,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -590,25 +597,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -628,13 +627,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -645,18 +637,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow, a.pilcrow:focus {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -715,9 +705,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -807,23 +797,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -834,19 +828,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -867,54 +863,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -933,26 +929,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -968,12 +964,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1035,17 +1032,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1055,11 +1054,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Network Inventory Software</td>
-<td class="right">April 2026</td>
+<td class="right">July 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Wu, et al.</td>
-<td class="center">Expires 18 October 2026</td>
+<td class="center">Expires 7 January 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1071,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ivy-network-inventory-software-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-04-16" class="published">16 April 2026</time>
+<time datetime="2026-07-06" class="published">6 July 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-10-18">18 October 2026</time></dd>
+<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1139,7 +1138,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 18 October 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1180,22 +1179,22 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-requirements-language" class="internal xref">Requirements Language</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-relationship-to-other-yang-" class="internal xref">Relationship to Other YANG Data Models</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-relationship-to-other-yang-" class="internal xref">Relationship to Other YANG Data Models</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-model-overview" class="internal xref">Model Overview</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-model-overview" class="internal xref">Model Overview</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-non-physical-network-elemen" class="internal xref">Non-physical Network Elements</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-non-physical-network-elemen" class="internal xref">Non-physical Network Elements</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-software-components" class="internal xref">Software Components</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-software-components" class="internal xref">Software Components</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-yang-data-model-for-network" class="internal xref">YANG Data model for Network Inventory Software Extensions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-yang-data-model-for-network" class="internal xref">YANG Data model for Network Inventory Software Extensions</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
@@ -1301,7 +1300,7 @@ redefined here:<a href="#section-1.2-1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.5">
             <p id="section-1.2-2.5.1">data node
-The following terms are defined in <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> and are not redefined
+  The following terms are defined in <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> and are not redefined
 here:<a href="#section-1.2-2.5.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.2-2.6">
@@ -1310,7 +1309,7 @@ here:<a href="#section-1.2-2.5.1" class="pilcrow">¶</a></p>
           <li class="normal" id="section-1.2-2.7">
             <p id="section-1.2-2.7.1">state data
 The tree diagram used in this document follows the notation defined
-in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>..<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
+in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>.<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-1.2-3">Also, this document uses terms defined in <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
@@ -1318,35 +1317,24 @@ in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>..<a href="#se
 </div>
 </section>
 </div>
-<div id="requirements-language">
-<section id="section-2">
-      <h2 id="name-requirements-language">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-requirements-language" class="section-name selfRef">Requirements Language</a>
-      </h2>
-<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-        "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-        "OPTIONAL" in this document are to be interpreted as described in BCP 14
-        <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="relationship-to-other-yang-data-models">
-<section id="section-3">
+<section id="section-2">
       <h2 id="name-relationship-to-other-yang-">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-relationship-to-other-yang-" class="section-name selfRef">Relationship to Other YANG Data Models</a>
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-relationship-to-other-yang-" class="section-name selfRef">Relationship to Other YANG Data Models</a>
       </h2>
-<p id="section-3-1">The base network inventory model supports the software versions of
+<p id="section-2-1">The base network inventory model supports the software versions of
       NEs and software versions of hardware components. This document adds
-      more software component identifiers (e.g. platformos, software patch)
-      and more NE types (e.g. software NE, virtual NE) to provide enhanced
+      more software component identifiers (e.g., platformos, software patch)
+      and more NE types (e.g., software NE, virtual NE) to provide enhanced
       software information on the NE to facilitate software compatibility
-      check.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2"><a href="#fig-ni-sw-mod-relation" class="auto internal xref">Figure 1</a> depicts the relationship between
+      check.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2"><a href="#fig-ni-sw-mod-relation" class="auto internal xref">Figure 1</a> depicts the relationship between
       the Software Extension model and the base network inventory model. The Software Extension
       network inventory model enhances the model defined in the base network
-      inventory model with more software specific attributes.<a href="#section-3-2" class="pilcrow">¶</a></p>
+      inventory model with more software specific attributes.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <span id="name-relationship-of-sw-extensio"></span><div id="fig-ni-sw-mod-relation">
 <figure id="figure-1">
-        <div class="alignCenter art-ascii-art art-text artwork" id="section-3-3.1">
+        <div class="alignCenter art-ascii-art art-text artwork" id="section-2-3.1">
 <pre>
 +----------------------+
 |                      |
@@ -1360,7 +1348,7 @@ in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>..<a href="#se
 +----------^-----------+
 |                      |
 |  Software Extensions |
-|    e.g.,SW module    |
+|    e.g., SW module   |
 |                      |
 +----------------------+
 </pre>
@@ -1372,15 +1360,22 @@ in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>..<a href="#se
 </section>
 </div>
 <div id="model-overview">
-<section id="section-4">
+<section id="section-3">
       <h2 id="name-model-overview">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-model-overview" class="section-name selfRef">Model Overview</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-model-overview" class="section-name selfRef">Model Overview</a>
       </h2>
-<p id="section-4-1">The tree diagram in <a href="#full-tree" class="auto internal xref">Figure 2</a> provides an overview of the data model for "ietf-network-inventory-sw-ext"
-      module.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">The tree diagram in <a href="#full-tree" class="auto internal xref">Figure 2</a> provides an overview of the data model for "ietf-network-inventory-sw-ext"
+      module.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The model applies software extension attributes at two levels:
+   *  NE-level "software-rev": Describes the main system software
+      revision of the network element, such as the network
+      operating system release of the whole device.
+   *  Component-level "software-rev": Describes the independent software
+      or firmware revision of an individual component, such as a line
+      card software, a line card firmware, or a pluggable software module.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <span id="name-yang-tree-of-software-exten"></span><div id="full-tree">
 <figure id="figure-2">
-        <div class="alignCenter art-text artwork" id="section-4-2.1">
+        <div class="alignCenter art-text artwork" id="section-3-3.1">
 <pre>
 module: ietf-network-inventory-sw-ext
   augment /nwi:network-inventory/nwi:network-elements
@@ -1416,32 +1411,32 @@ module: ietf-network-inventory-sw-ext
 </section>
 </div>
 <div id="non-physical-network-elements">
-<section id="section-5">
+<section id="section-4">
       <h2 id="name-non-physical-network-elemen">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-non-physical-network-elemen" class="section-name selfRef">Non-physical Network Elements</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-non-physical-network-elemen" class="section-name selfRef">Non-physical Network Elements</a>
       </h2>
-<p id="section-5-1">In the base Network Inventory YANG model, "ne-type" is a YANG
+<p id="section-4-1">In the base Network Inventory YANG model, "ne-type" is a YANG
       identity that describes the type of the network element and only the
       "physical-network-element" identity" is defined. This document adds
       non-physical NE identity, such as "ne-software", "ne-virtual", and
-      "ne-container".<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">The base Network Inventory model also defines common inventory
+      "ne-container".<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">The base Network Inventory model also defines common inventory
       attributes, including the software version, patch versions, product
       name, and serial number. The data is also applicable to non-physical
-      NEs.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">The Network Inventory software extension mode defines some new
+      NEs.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">The Network Inventory software extension mode defines some new
       software attributes, consisting of software status, installation time,
-      and activation time.<a href="#section-5-3" class="pilcrow">¶</a></p>
+      and activation time.<a href="#section-4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="software-components">
-<section id="section-6">
+<section id="section-5">
       <h2 id="name-software-components">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-software-components" class="section-name selfRef">Software Components</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-software-components" class="section-name selfRef">Software Components</a>
       </h2>
-<p id="section-6-1">Software components refer to the software installed on the NE, such
-      as operating system, software modules, BIOS, and boot loaders.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">Similar to the common inventory attributes of NEs, the common
+<p id="section-5-1">Software components refer to the software installed on the NE, such
+      as operating system, software modules, BIOS, and boot loaders.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Similar to the common inventory attributes of NEs, the common
       attributes of software components (such as software revisions, patch
       revisions, product name, and serial number) are also applicable to
       software components. For software revisions and patch revisions, the base inventory
@@ -1450,23 +1445,23 @@ module: ietf-network-inventory-sw-ext
       "patch". For example, on a router, software components may
       include a routing protocol package
       (e.g., " foo-rt-protocol-suite"), or a firmware module for a
-      line card (e.g., " foo-lc-fw-21.5.3").<a href="#section-6-2" class="pilcrow">¶</a></p>
-<p id="section-6-3">If more detailed installation and activation
-      information is needed—such as whether a component is active, pending-reboot,
+      line card (e.g., " foo-lc-fw-21.5.3").<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">If more detailed installation and activation
+      information is needed, such as whether a component is active, pending-reboot,
  or rollback-eligible, along with its install time or activation
  time stamp, the extension attributes of software components
-      can be used.<a href="#section-6-3" class="pilcrow">¶</a></p>
+      can be used.<a href="#section-5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="yang-data-model-for-network-inventory-software-extensions">
-<section id="section-7">
+<section id="section-6">
       <h2 id="name-yang-data-model-for-network">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-yang-data-model-for-network" class="section-name selfRef">YANG Data model for Network Inventory Software Extensions</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-yang-data-model-for-network" class="section-name selfRef">YANG Data model for Network Inventory Software Extensions</a>
       </h2>
-<p id="section-7-1">The "ietf-network-inventory-sw-ext" module uses types defined in <span>[<a href="#RFC9911" class="cite xref">RFC9911</a>]</span>,
-   <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<div class="breakable lang-yang sourcecode" id="section-7-2">
-<pre>&lt;CODE BEGINS&gt; file "ietf-network-inventory-sw-ext@2025-10-20.yang"
+<p id="section-6-1">The "ietf-network-inventory-sw-ext" module uses types defined in <span>[<a href="#RFC9911" class="cite xref">RFC9911</a>]</span>,
+   <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div class="breakable lang-yang sourcecode" id="section-6-2">
+<pre>&lt;CODE BEGINS&gt; file "ietf-network-inventory-sw-ext@2026-07-06.yang"
 
 module ietf-network-inventory-sw-ext {
   yang-version 1.1;
@@ -1514,15 +1509,9 @@ module ietf-network-inventory-sw-ext {
      (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX; see
-     the RFC itself for full legal notices.
+     the RFC itself for full legal notices.";
 
-     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
-     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
-     'MAY', and 'OPTIONAL' in this document are to be interpreted as
-     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
-     they appear in all capitals, as shown here.";
-
-  revision 2026-04-15 {
+  revision 2026-07-06 {
     description
       "Initial version";
     reference
@@ -1544,7 +1533,7 @@ module ietf-network-inventory-sw-ext {
     base ne-nonphysical;
     description
       "Software NE that runs directly on a host OS
-       (a.k.a. bare-metal deployment) or hypervisor.
+       (also known as bare-metal deployment) or hypervisor.
        Examples of software NEs are network controllers.";
   }
 
@@ -1578,8 +1567,8 @@ module ietf-network-inventory-sw-ext {
   identity bios {
     base software-component;
     description
-      "BIOS or UEFI firmware image responsible for hardware
-       initialisation and secure boot.";
+      "System firmware responsible for hardware initialization
+       and system boot.";
   }
 
   identity boot-loader {
@@ -1593,7 +1582,7 @@ module ietf-network-inventory-sw-ext {
     base software-component;
     description
       "Installable unit smaller than a full OS image,
-       e.g. feature package.";
+       e.g., feature package.";
   }
 
   identity software-status {
@@ -1604,13 +1593,15 @@ module ietf-network-inventory-sw-ext {
   identity software-installed {
     base software-status;
     description
-      "Software status is Installed.";
+      "Software or patch is installed on the network element
+          or component but not yet active.";
   }
 
   identity software-activated {
     base software-status;
     description
-      "Software status is Activated.";
+      "Software or patch is active and taking effect
+          on the network element or component.";
   }
 
   grouping software-info-grouping {
@@ -1674,9 +1665,34 @@ module ietf-network-inventory-sw-ext {
   }
 }
 
-
-&lt;CODE ENDS&gt;</pre><a href="#section-7-2" class="pilcrow">¶</a>
+&lt;CODE ENDS&gt;</pre><a href="#section-6-2" class="pilcrow">¶</a>
 </div>
+</section>
+</div>
+<div id="operational-considerations">
+<section id="section-7">
+      <h2 id="name-operational-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
+      </h2>
+<p id="section-7-1">This section complements the operational considerations of the
+   base network inventory model <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.
+   The considerations of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>
+   also apply to this extension: the read-only perspective of
+   inventory data, data discovery by the server from underlying
+   elements, aggregation at hierarchical controller interfaces,
+   and brownfield migration scenarios.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">This model provides read-only reporting of software status and
+   associated timestamps.  It reflects the state of software
+   revisions and patches as discovered by the server; it does not
+   track software configuration intent or repository state.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">The software inventory data is discovered by the server from
+   underlying managed entities using implementation-specific
+   mechanisms.  The installation-time and activation-time
+   timestamps, as well as the software status (installed or
+   activated), are reported as discovered from the managed entity.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">Software lifecycle management operations (install,
+   activate, remove, etc.) are out of scope and could be defined
+   in separate YANG modules.<a href="#section-7-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -1684,32 +1700,44 @@ module ietf-network-inventory-sw-ext {
       <h2 id="name-security-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-8-1">This section uses the template described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-28#section-3.7" class="relref">Section 3.7</a> of [<a href="#I-D.ietf-netmod-rfc8407bis" class="cite xref">I-D.ietf-netmod-rfc8407bis</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">The "ietf-network-inventory-sw-ext" YANG module defines a data model that is
+<p id="section-8-1">This section is modeled after the template described in <span><a href="https://rfc-editor.org/rfc/rfc9907#section-3.7" class="relref">Section 3.7</a> of [<a href="#RFC9907" class="cite xref">RFC9907</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">The "ietf-network-inventory-sw-ext" YANG module augments the base
+   network inventory model defined in <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.
+   All security considerations specified in the base model apply to this
+   extension module. This section complements the base model with
+   additional security considerations specific to software inventory
+   extensions.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">The "ietf-network-inventory-sw-ext" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
-NETCONF NETCONF <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> or RESTCONF <span>[<a href="#RFC8040" class="cite xref">RFC8040</a>]</span>. These YANG-based management
-protocols (1) have to use a secure transport layer
-(e.g., SSH <span>[<a href="#RFC4252" class="cite xref">RFC4252</a>]</span>, TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, and QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>) and (2) have
-to use mutual authentication.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">The Network Configuration Access Control Model (NACM) <span>[<a href="#RFC8341" class="cite xref">RFC8341</a>]</span>
+NETCONF <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> and RESTCONF <span>[<a href="#RFC8040" class="cite xref">RFC8040</a>]</span>. These YANG-based management
+protocols (1) have to use a secure transport layer (e.g., SSH <span>[<a href="#RFC4252" class="cite xref">RFC4252</a>]</span>, TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>,
+and QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>) and (2) have to use mutual authentication.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-4">The Network Configuration Access Control Model (NACM) <span>[<a href="#RFC8341" class="cite xref">RFC8341</a>]</span>
 provides the means to restrict access for particular NETCONF or
 RESTCONF users to a preconfigured subset of all available NETCONF or
-RESTCONF protocol operations and content.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">Some of the readable data nodes in this YANG module may be considered
+RESTCONF protocol operations and content.<a href="#section-8-4" class="pilcrow">¶</a></p>
+<p id="section-8-5">Some of the readable data nodes in this YANG module may be considered
 sensitive or vulnerable in some network environments.  It is thus
 important to control read access (e.g., via get, get-config, or
-notification) to these data nodes. Specifically, the following
-subtrees and data nodes have particular sensitivities/
-vulnerabilities:<a href="#section-8-4" class="pilcrow">¶</a></p>
+notification) to these data nodes.<a href="#section-8-5" class="pilcrow">¶</a></p>
+<p id="section-8-6">Specifically, the following subtrees and data nodes have particular sensitivities/vulnerabilities:<a href="#section-8-6" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8-5.1">
-          <p id="section-8-5.1.1">"/nwi:network-elements/network-element/software-rev"<a href="#section-8-5.1.1" class="pilcrow">¶</a></p>
-<p id="section-8-5.1.2">
-This subtree reports the software information for all the network
-elements and their hardware components deployed within the network
-as well as of the software modules being active on these network
-elements and components. This may reveal software versions or
-unpatched vulnerabilities.<a href="#section-8-5.1.2" class="pilcrow">¶</a></p>
+<li class="normal" id="section-8-7.1">
+          <p id="section-8-7.1.1">"/nwi:network-elements/network-element/software-rev"<a href="#section-8-7.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-8-7.2">
+          <p id="section-8-7.2.1">"/nwi:network-elements/network-element/software-rev/patch"<a href="#section-8-7.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-8-7.3">
+          <p id="section-8-7.3.1">"/nwi:network-elements/network-element/components/component/software-rev"<a href="#section-8-7.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-8-7.4">
+          <p id="section-8-7.4.1">"/nwi:network-elements/network-element/component/component/software-rev/patch"
+&gt; These extension add status, installation time, and activation time
+to both NE-level and component-level software revisions and patches.
+Disclosure of detailed software versions, patch levels, and
+lifecycle timestamps can reveal unpatched vulnerabilities and
+operational maintenance windows, enabling targeted attacks.<a href="#section-8-7.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1754,7 +1782,7 @@ Reference:  RFC XXXX
 <dl class="references">
 <dt id="I-D.ietf-ivy-network-inventory-yang">[I-D.ietf-ivy-network-inventory-yang]</dt>
         <dd>
-<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-14</span>, <time datetime="2026-02-05" class="refDate">5 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-14">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-18</span>, <time datetime="2026-05-27" class="refDate">27 May 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-18">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3688">[RFC3688]</dt>
         <dd>
@@ -1793,14 +1821,6 @@ Reference:  RFC XXXX
 <a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
-<dt id="I-D.ietf-netmod-rfc8407bis">[I-D.ietf-netmod-rfc8407bis]</dt>
-        <dd>
-<span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Boucadair, M.</span>, and <span class="refAuthor">Q. Wu</span>, <span class="refTitle">"Guidelines for Authors and Reviewers of Documents Containing YANG Data Models"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netmod-rfc8407bis-28</span>, <time datetime="2025-06-05" class="refDate">5 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-28">https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-28</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC2119">[RFC2119]</dt>
-        <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC4252">[RFC4252]</dt>
         <dd>
 <span class="refAuthor">Ylonen, T.</span> and <span class="refAuthor">C. Lonvick, Ed.</span>, <span class="refTitle">"The Secure Shell (SSH) Authentication Protocol"</span>, <span class="seriesInfo">RFC 4252</span>, <span class="seriesInfo">DOI 10.17487/RFC4252</span>, <time datetime="2006-01" class="refDate">January 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4252">https://www.rfc-editor.org/rfc/rfc4252</a>&gt;</span>. </dd>
@@ -1808,10 +1828,6 @@ Reference:  RFC XXXX
 <dt id="RFC8040">[RFC8040]</dt>
         <dd>
 <span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Bjorklund, M.</span>, and <span class="refAuthor">K. Watsen</span>, <span class="refTitle">"RESTCONF Protocol"</span>, <span class="seriesInfo">RFC 8040</span>, <span class="seriesInfo">DOI 10.17487/RFC8040</span>, <time datetime="2017-01" class="refDate">January 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8040">https://www.rfc-editor.org/rfc/rfc8040</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC8174">[RFC8174]</dt>
-        <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8309">[RFC8309]</dt>
         <dd>
@@ -1826,8 +1842,12 @@ Reference:  RFC XXXX
 <span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9000">[RFC9000]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Iyengar, J., Ed.</span> and <span class="refAuthor">M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="seriesInfo">RFC 9000</span>, <span class="seriesInfo">DOI 10.17487/RFC9000</span>, <time datetime="2021-05" class="refDate">May 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9000">https://www.rfc-editor.org/rfc/rfc9000</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9907">[RFC9907]</dt>
+      <dd>
+<span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Boucadair, M., Ed.</span>, and <span class="refAuthor">Q. Wu</span>, <span class="refTitle">"Guidelines for Authors and Reviewers of Documents Containing YANG Data Models"</span>, <span class="seriesInfo">BCP 216</span>, <span class="seriesInfo">RFC 9907</span>, <span class="seriesInfo">DOI 10.17487/RFC9907</span>, <time datetime="2026-03" class="refDate">March 2026</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9907">https://www.rfc-editor.org/rfc/rfc9907</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1933,8 +1953,8 @@ Reference:  RFC XXXX
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-B-1">The authors would like to thank Prasenjit Manna,Phil Bedard, Diego R.
-      Lopez, Italo Busi, and many others for their helpful comments and
+<p id="appendix-B-1">The authors would like to thank Prasenjit Manna, Phil Bedard, Diego R.
+      Lopez, Italo Busi, Adrian Farrel, and many others for their helpful comments and
       suggestions.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
