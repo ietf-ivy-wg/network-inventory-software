@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-02T02:37:55.098540+00:00",
+  "timestamp": "2026-07-07T02:03:10.456152+00:00",
   "repo": "ietf-ivy-wg/network-inventory-software",
   "labels": [
     {
@@ -151,6 +151,36 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOOHvlD87uVKht",
+      "title": "Add a new Section of Operation Consideration and other editorial fixes to address review comments from Adrian",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-software/pull/4",
+      "state": "MERGED",
+      "author": "lana-wu",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "boucadair"
+      ],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-06T11:58:56Z",
+      "updatedAt": "2026-07-06T12:03:55Z",
+      "baseRepository": "ietf-ivy-wg/network-inventory-software",
+      "baseRefName": "main",
+      "baseRefOid": "167ee49f83d4a3c9338fcca0473ca20e6632a5d6",
+      "headRepository": "lana-wu/network-inventory-software",
+      "headRefName": "main",
+      "headRefOid": "291a842e0d73b5c1bdf7e3ec58da2da1e9b19971",
+      "closedAt": "2026-07-06T12:03:55Z",
+      "mergedAt": "2026-07-06T12:03:55Z",
+      "mergedBy": "lana-wu",
+      "mergeCommit": {
+        "oid": "c7a70be58f6bd6605afc6accebd1618ffa3eb338"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
