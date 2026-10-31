@@ -4,38 +4,38 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>A YANG Network Data Model of Network Inventory Software Extensions</title>
+<title>A YANG Network Data Model of Network Inventory Software</title>
 <meta content="Bo Wu" name="author">
 <meta content="Cheng Zhou" name="author">
 <meta content="Qin Wu" name="author">
 <meta content="Mohamed Boucadair" name="author">
 <meta content="
        This document extends the base Network Inventory YANG model to support
- non-physical network elements (NEs), such as controllers, virtual
- routers, and virtual firewalls, as well as software components
- like platform operating systems and software modules. In addition to
- the software revisions and patches already defined in the base model,
- this extension introduces software status and time stamp information. 
+software-based network elements (NEs) and software components. The
+extension introduces software lifecycle status that distinguishes running
+software from software that is installed but not running, together
+with installation timestamps for non-running software, and both
+installation and activation timestamps for running software. 
     " name="description">
-<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="xml2rfc 3.34.1" name="generator">
 <meta content="Automation" name="keyword">
 <meta content="Network Inventory" name="keyword">
 <meta content="Network Operation" name="keyword">
 <meta content="draft-ietf-ivy-network-inventory-software-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.0
-    Python 3.14.5
-    ConfigArgParse 1.7.5
+  xml2rfc 3.34.1
+    Python 3.14.8
+    ConfigArgParse 1.8.0
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.0
+    platformdirs 4.13.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.2
+    wcwidth 0.9.2
 -->
 <link href="draft-ietf-ivy-network-inventory-software.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -71,7 +71,6 @@
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -120,7 +119,6 @@
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -185,7 +183,6 @@
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -1054,11 +1051,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Network Inventory Software</td>
-<td class="right">July 2026</td>
+<td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Wu, et al.</td>
-<td class="center">Expires 7 January 2027</td>
+<td class="center">Expires 4 May 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1071,12 +1068,12 @@ svg {
 <dd class="internet-draft">draft-ietf-ivy-network-inventory-software-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-06" class="published">6 July 2026</time>
+<time datetime="2026-10-31" class="published">31 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-07">7 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-05-04">4 May 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1098,15 +1095,15 @@ svg {
 </dd>
 </dl>
 </div>
-<h1 id="title">A YANG Network Data Model of Network Inventory Software Extensions</h1>
+<h1 id="title">A YANG Network Data Model of Network Inventory Software</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document extends the base Network Inventory YANG model to support
- non-physical network elements (NEs), such as controllers, virtual
- routers, and virtual firewalls, as well as software components
- like platform operating systems and software modules. In addition to
- the software revisions and patches already defined in the base model,
- this extension introduces software status and time stamp information.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+software-based network elements (NEs) and software components. The
+extension introduces software lifecycle status that distinguishes running
+software from software that is installed but not running, together
+with installation timestamps for non-running software, and both
+installation and activation timestamps for running software.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1138,7 +1135,7 @@ svg {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 7 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 May 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1179,51 +1176,56 @@ svg {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-relationship-to-other-yang-" class="internal xref">Relationship to Other YANG Data Models</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-model-overview" class="internal xref">Model Overview</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-non-physical-network-elemen" class="internal xref">Non-physical Network Elements</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-software-components" class="internal xref">Software Components</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-yang-data-model-for-network" class="internal xref">YANG Data model for Network Inventory Software Extensions</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-yang-data-model-for-network" class="internal xref">YANG Data Model for Network Inventory Software Overview</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
-                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-relationship-to-other-yang-" class="internal xref">Relationship to Other YANG Data Models</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
-                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-network-inventory-software-" class="internal xref">Network Inventory Software Tree Diagram</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-software-based-network-elem" class="internal xref">Software-based Network Elements</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-software-components" class="internal xref">Software Components</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-yang-data-model-for-network-" class="internal xref">YANG Data model for Network Inventory Software</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples-of-software-attrib" class="internal xref">Examples of Software Attributes</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-examples-of-software-attrib" class="internal xref">Examples of Software Attributes</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
-            <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-D" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1234,29 +1236,27 @@ svg {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Network Inventory consists of the physical and non-physical
+<p id="section-1-1">The Network Inventory consists of the physical and software-based
       network elements (NEs), hardware components, firmware components, and
-      software components on a managed network domain. The non-physical
+      software components on a managed network domain. The software-based
       network elements (NEs) are network devices that support network
       protocols and functions, e.g., routers, firewalls, and controllers,
-      which can reside in any network or compute devices, such as servers in
-      Data Center (DC), server-based virtual machines (VMs), or server-based
-      containers.<a href="#section-1-1" class="pilcrow">¶</a></p>
+      which can reside in any network or compute environment.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2"><span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>  defines the base
       Network Inventory YANG model for physical network element (NE) and
       hardware components of NEs. Examples of hardware components could be
       rack, shelf, slot, board and physical port.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">The management of non-physical NE and software components information
+<p id="section-1-3">The management of software-based NE and software components information
       is similar to the management of physical NE and hardware information.
       For example, inventory data, including product names, serial numbers,
       etc. are also applicable. This document defines a network inventory
-      software extension YANG model. In addition to inheriting the common
+      software YANG model. In addition to inheriting the common
       inventory attributes of the base network inventory model, this document
-      also adds some software-specific attributes of non-physical NEs (such as
+      also adds some software-specific attributes of software-based NEs (such as
       controllers, virtual routers, and virtual firewalls) and software
       components (such as operating system, software modules, BIOS, and boot
       loader).<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">The Network Inventory software extension model is classified as a
+<p id="section-1-4">The Network Inventory software model is classified as a
       network model (Section 4 of  <span>[<a href="#RFC8309" class="cite xref">RFC8309</a>]</span>).<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">The YANG data model in this document conforms to the Network
 Management Datastore Architecture (NMDA) defined in <span>[<a href="#RFC8342" class="cite xref">RFC8342</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
@@ -1283,58 +1283,72 @@ Management Datastore Architecture (NMDA) defined in <span>[<a href="#RFC8342" cl
         <h3 id="name-terminology-and-notations">
 <a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-terminology-and-notations" class="section-name selfRef">Terminology and Notations</a>
         </h3>
-<p id="section-1.2-1">The following terms are defined in <span>[<a href="#RFC7950" class="cite xref">RFC7950</a>]</span> and are not
-redefined here:<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.2-2">The following terms are defined in <span>[<a href="#RFC7950" class="cite xref">RFC7950</a>]</span> and are not
+redefined here:<a href="#section-1.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1.2-2.1">
-            <p id="section-1.2-2.1.1">client<a href="#section-1.2-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-1.2-3.1">
+            <p id="section-1.2-3.1.1">client<a href="#section-1.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-2.2">
-            <p id="section-1.2-2.2.1">server<a href="#section-1.2-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-1.2-3.2">
+            <p id="section-1.2-3.2.1">server<a href="#section-1.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-2.3">
-            <p id="section-1.2-2.3.1">augment<a href="#section-1.2-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-1.2-3.3">
+            <p id="section-1.2-3.3.1">augment<a href="#section-1.2-3.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-2.4">
-            <p id="section-1.2-2.4.1">data model<a href="#section-1.2-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-1.2-3.4">
+            <p id="section-1.2-3.4.1">data model<a href="#section-1.2-3.4.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-1.2-2.5">
-            <p id="section-1.2-2.5.1">data node
-  The following terms are defined in <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> and are not redefined
-here:<a href="#section-1.2-2.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-1.2-2.6">
-            <p id="section-1.2-2.6.1">configuration data<a href="#section-1.2-2.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-1.2-2.7">
-            <p id="section-1.2-2.7.1">state data
-The tree diagram used in this document follows the notation defined
-in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>.<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-1.2-3.5">
+            <p id="section-1.2-3.5.1">data node<a href="#section-1.2-3.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-1.2-3">Also, this document uses terms defined in <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
+<p id="section-1.2-4">The tree diagram used in this document follows the notation defined
+   in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>.<a href="#section-1.2-4" class="pilcrow">¶</a></p>
+<p id="section-1.2-5">Also, this document uses terms defined in <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1.2-6.1">
+            <p id="section-1.2-6.1.1">Network Inventory: See Section 2.2 of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-6.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.2-6.2">
+            <p id="section-1.2-6.2.1">Network Element: See Section 2.2 of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-6.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.2-6.3">
+            <p id="section-1.2-6.3.1">Component: See Section 2.2 of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-6.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-1.2-6.4">
+            <p id="section-1.2-6.4.1">Software Components: See Section 3.3.2 of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-6.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 </section>
 </div>
-<div id="relationship-to-other-yang-data-models">
+<div id="yang-data-model-for-network-inventory-software-overview">
 <section id="section-2">
-      <h2 id="name-relationship-to-other-yang-">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-relationship-to-other-yang-" class="section-name selfRef">Relationship to Other YANG Data Models</a>
+      <h2 id="name-yang-data-model-for-network">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-yang-data-model-for-network" class="section-name selfRef">YANG Data Model for Network Inventory Software Overview</a>
       </h2>
-<p id="section-2-1">The base network inventory model supports the software versions of
-      NEs and software versions of hardware components. This document adds
-      more software component identifiers (e.g., platformos, software patch)
-      and more NE types (e.g., software NE, virtual NE) to provide enhanced
-      software information on the NE to facilitate software compatibility
-      check.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2"><a href="#fig-ni-sw-mod-relation" class="auto internal xref">Figure 1</a> depicts the relationship between
-      the Software Extension model and the base network inventory model. The Software Extension
-      network inventory model enhances the model defined in the base network
-      inventory model with more software specific attributes.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<div id="relationship-to-other-yang-data-models">
+<section id="section-2.1">
+        <h3 id="name-relationship-to-other-yang-">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-relationship-to-other-yang-" class="section-name selfRef">Relationship to Other YANG Data Models</a>
+        </h3>
+<p id="section-2.1-1">The base network inventory model supports the software versions of
+NEs and software versions of hardware components. This document adds
+more software component identifiers (e.g., platform OS), software NE type,
+and software lifecycle status and time stamp information to provide extended
+software information on the NE to facilitate software compatibility check.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2"><a href="#fig-ni-sw-mod-relation" class="auto internal xref">Figure 1</a> depicts the relationship between
+the network inventory software model and the base network inventory model.
+The network inventory software model adds more software specific attributes.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <span id="name-relationship-of-sw-extensio"></span><div id="fig-ni-sw-mod-relation">
 <figure id="figure-1">
-        <div class="alignCenter art-ascii-art art-text artwork" id="section-2-3.1">
+          <div class="alignCenter art-ascii-art art-text artwork" id="section-2.1-3.1">
 <pre>
 +----------------------+
 |                      |
@@ -1355,124 +1369,143 @@ in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>.<a href="#sec
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
 <a href="#name-relationship-of-sw-extensio" class="selfRef">Relationship of SW Extension Model to the Base Inventory Model</a>
-        </figcaption></figure>
+          </figcaption></figure>
 </div>
 </section>
 </div>
-<div id="model-overview">
-<section id="section-3">
-      <h2 id="name-model-overview">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-model-overview" class="section-name selfRef">Model Overview</a>
-      </h2>
-<p id="section-3-1">The tree diagram in <a href="#full-tree" class="auto internal xref">Figure 2</a> provides an overview of the data model for "ietf-network-inventory-sw-ext"
-      module.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The model applies software extension attributes at two levels:<a href="#section-3-2" class="pilcrow">¶</a></p>
+<div id="network-inventory-software-tree-diagram">
+<section id="section-2.2">
+        <h3 id="name-network-inventory-software-">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-network-inventory-software-" class="section-name selfRef">Network Inventory Software Tree Diagram</a>
+        </h3>
+<p id="section-2.2-1">The tree diagram in <a href="#full-tree" class="auto internal xref">Figure 2</a> provides an overview of the data model for "ietf-network-inventory-software"
+      module.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.2-2">The model applies software extension attributes at two levels:<a href="#section-2.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-3.1">
-          <p id="section-3-3.1.1">NE-level "software-rev": Describes the main system software
+<li class="normal" id="section-2.2-3.1">
+            <p id="section-2.2-3.1.1">NE-level "software-rev": Describes the main system software
 revision of the network element, such as the network
-operating system release of the whole device.<a href="#section-3-3.1.1" class="pilcrow">¶</a></p>
+operating system release of the whole device. Only running
+software is reported here, consistent with the base model.
+The augmented nodes   include installation-time and activation-time.<a href="#section-2.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-3.2">
-          <p id="section-3-3.2.1">Component-level "software-rev": Describes the independent software
+          <li class="normal" id="section-2.2-3.2">
+            <p id="section-2.2-3.2.1">Component-level "software-rev": Describes the independent software
 or firmware revision of an individual component, such as a line
-card software, a line card firmware, or a pluggable software module.<a href="#section-3-3.2.1" class="pilcrow">¶</a></p>
+card software, a line card firmware, or a pluggable software module.
+Only running software is reported here, consistent with the base model.
+The augmented nodes   include installation-time and activation-time.<a href="#section-2.2-3.2.1" class="pilcrow">¶</a></p>
 </li>
-      </ul>
-<span id="name-yang-tree-of-software-exten"></span><div id="full-tree">
+        </ul>
+<p id="section-2.2-4">In addition, the model introduces:<a href="#section-2.2-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.2-5.1">
+            <p id="section-2.2-5.1.1">"installed-software": Lists at both NE and component levels,
+ reporting software that is present on the entity but not currently
+ running (installed, or activated but pending reload).
+ installed-software carries name, revision, status, installation-time.
+ Activation-time is not modeled for installed-software entries;
+ activation-time is only available once the software becomes running
+ and appears in software-rev.<a href="#section-2.2-5.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<span id="name-yang-tree-of-network-invent"></span><div id="full-tree">
 <figure id="figure-2">
-        <div class="alignCenter art-text artwork" id="section-3-4.1">
+          <div class="alignCenter art-text artwork" id="section-2.2-6.1">
 <pre>
-module: ietf-network-inventory-sw-ext
+module: ietf-network-inventory-software
+
   augment /nwi:network-inventory/nwi:network-elements
             /nwi:network-element/nwi:software-rev:
-    +--ro status?              identityref
     +--ro installation-time?   yang:date-and-time
     +--ro activation-time?     yang:date-and-time
   augment /nwi:network-inventory/nwi:network-elements
-            /nwi:network-element/nwi:software-rev/nwi:patch:
-    +--ro status?              identityref
-    +--ro installation-time?   yang:date-and-time
-    +--ro activation-time?     yang:date-and-time
+            /nwi:network-element:
+    +--ro installed-software* [name revision]
+       +--ro name                 string
+       +--ro revision             string
+       +--ro status?              identityref
+       +--ro installation-time?   yang:date-and-time
+  augment /nwi:network-inventory/nwi:network-elements
+            /nwi:network-element/nwi:components/nwi:component:
+    +--ro installed-software* [name revision]
+       +--ro name                 string
+       +--ro revision             string
+       +--ro status?              identityref
+       +--ro installation-time?   yang:date-and-time
   augment /nwi:network-inventory/nwi:network-elements
             /nwi:network-element/nwi:components/nwi:component
             /nwi:software-rev:
-    +--ro status?              identityref
     +--ro installation-time?   yang:date-and-time
     +--ro activation-time?     yang:date-and-time
-  augment /nwi:network-inventory/nwi:network-elements
-            /nwi:network-element/nwi:components/nwi:component
-            /nwi:software-rev/nwi:patch:
-    +--ro status?              identityref
-    +--ro installation-time?   yang:date-and-time
-    +--ro activation-time?     yang:date-and-time
-
-
 </pre>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
-<a href="#name-yang-tree-of-software-exten" class="selfRef">YANG Tree of Software Extensions</a>
-        </figcaption></figure>
+<a href="#name-yang-tree-of-network-invent" class="selfRef">YANG Tree of Network Inventory Software</a>
+          </figcaption></figure>
 </div>
 </section>
 </div>
-<div id="non-physical-network-elements">
-<section id="section-4">
-      <h2 id="name-non-physical-network-elemen">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-non-physical-network-elemen" class="section-name selfRef">Non-physical Network Elements</a>
-      </h2>
-<p id="section-4-1">In the base Network Inventory YANG model, "ne-type" is a YANG
-      identity that describes the type of the network element and only the
-      "physical-network-element" identity" is defined. This document adds
-      non-physical NE identity, such as "ne-software", "ne-virtual", and
-      "ne-container".<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The base Network Inventory model also defines common inventory
-      attributes, including the software version, patch versions, product
-      name, and serial number. The data is also applicable to non-physical
-      NEs.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">The Network Inventory software extension mode defines some new
-      software attributes, consisting of software status, installation time,
-      and activation time.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<div id="software-based-network-elements">
+<section id="section-2.3">
+        <h3 id="name-software-based-network-elem">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-software-based-network-elem" class="section-name selfRef">Software-based Network Elements</a>
+        </h3>
+<p id="section-2.3-1">In the base Network Inventory YANG model, "ne-type" is a YANG
+identity that describes the type of the network element and only the
+"ne-physical" identity" is defined. This document adds
+"ne-software-based" identity for software-based NEs.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">The base Network Inventory model also defines common inventory
+attributes, including the software version, patch versions, product
+name, and serial number. The data is also applicable to software-based
+NEs.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.3-3">A software-based NE performs network protocol or forwarding functions
+but does not correspond to a distinguishable hardware chassis.
+It may be hosted on bare-metal server, in a virtual machine,
+container, or cloud compute instance.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="software-components">
-<section id="section-5">
-      <h2 id="name-software-components">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-software-components" class="section-name selfRef">Software Components</a>
-      </h2>
-<p id="section-5-1">Software components refer to the software installed on the NE, such
-      as operating system, software modules, BIOS, and boot loaders.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Similar to the common inventory attributes of NEs, the common
-      attributes of software components (such as software revisions, patch
-      revisions, product name, and serial number) are also applicable to
-      software components. For software revisions and patch revisions, the base inventory
-      (Section 4 of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>)
-      defines the "list" of "software-rev" and the "list" of
-      "patch". For example, on a router, software components may
-      include a routing protocol package
-      (e.g., " foo-rt-protocol-suite"), or a firmware module for a
-      line card (e.g., " foo-lc-fw-21.5.3").<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">If more detailed installation and activation
-      information is needed, such as whether a component is active, pending-reboot,
- or rollback-eligible, along with its install time or activation
- time stamp, the extension attributes of software components
-      can be used.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<section id="section-2.4">
+        <h3 id="name-software-components">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-software-components" class="section-name selfRef">Software Components</a>
+        </h3>
+<p id="section-2.4-1">Software components refer to the software installed on the NE, such
+as operating system, software modules, BIOS, and boot loaders.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">Similar to the common inventory attributes of NEs, the common
+attributes of software components (such as software revisions,
+patch revisions, product name, and serial number) are also applicable to
+software components. For software revisions and patch revisions, the base inventory
+(Section 4 of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>)
+defines the "list" of "software-rev" and the "list" of
+"patch". For example, on a router, software components may
+include a routing protocol package (e.g., "foo-rt-protocol-suite"),
+or a firmware module for a line card (e.g., "foo-lc-fw-21.5.3").<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.4-3">The base "software-rev" list reports software that is currently
+   running on the entity.  Software that is present but not running
+   (e.g., installed but not activated, or activated but pending a reload
+   for a cold patch or cold upgrade) is reported in the
+   "installed-software" list defined by this document.  The two lists
+   are mutually exclusive: an entry MUST NOT appear in both lists at the
+   same time.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="yang-data-model-for-network-inventory-software-extensions">
-<section id="section-6">
-      <h2 id="name-yang-data-model-for-network">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-yang-data-model-for-network" class="section-name selfRef">YANG Data model for Network Inventory Software Extensions</a>
+</section>
+</div>
+<div id="yang-data-model-for-network-inventory-software">
+<section id="section-3">
+      <h2 id="name-yang-data-model-for-network-">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-yang-data-model-for-network-" class="section-name selfRef">YANG Data model for Network Inventory Software</a>
       </h2>
-<p id="section-6-1">The "ietf-network-inventory-sw-ext" module uses types defined in <span>[<a href="#RFC9911" class="cite xref">RFC9911</a>]</span>,
-   <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<div class="breakable lang-yang sourcecode" id="section-6-2">
-<pre>&lt;CODE BEGINS&gt; file "ietf-network-inventory-sw-ext@2026-07-06.yang"
+<p id="section-3-1">The "ietf-network-inventory-software" module uses types defined in <span>[<a href="#RFC9911" class="cite xref">RFC9911</a>]</span>,
+   <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div class="breakable lang-yang sourcecode" id="section-3-2">
+<pre>&lt;CODE BEGINS&gt; file "ietf-network-inventory-software@2026-10-31.yang"
 
-module ietf-network-inventory-sw-ext {
+module ietf-network-inventory-software {
   yang-version 1.1;
   namespace
-    "urn:ietf:params:xml:ns:yang:ietf-network-inventory-sw-ext";
+    "urn:ietf:params:xml:ns:yang:ietf-network-inventory-software";
   prefix nwis;
 
   import ietf-yang-types {
@@ -1490,7 +1523,7 @@ module ietf-network-inventory-sw-ext {
     "IETF Network Inventory YANG (ivy) Working Group";
   contact
     "WG Web:   &lt;https://datatracker.ietf.org/wg/ivy&gt;
-     WG List:  &lt;mailto:inventory-yang@ietf.org&gt;
+     WG List:  &lt;mailto:ivy@ietf.org&gt;
 
      Editor: Bo Wu
              &lt;lana.wubo@huawei.com&gt;
@@ -1501,8 +1534,7 @@ module ietf-network-inventory-sw-ext {
      Editor: Mohamed Boucadair
              &lt;mohamed.boucadair@orange.com&gt;";
   description
-    "This YANG module defines a model for network inventory software
-     extensions.
+    "This module defines a YANG model for network inventory software.
 
      Copyright (c) 2026 IETF Trust and the persons
      identified as authors of the code.  All rights reserved.
@@ -1515,59 +1547,42 @@ module ietf-network-inventory-sw-ext {
      (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX; see
-     the RFC itself for full legal notices.";
+     the RFC itself for full legal notices.
 
-  revision 2026-07-06 {
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.";
+
+  revision 2026-10-31 {
     description
       "Initial version";
     reference
-      "RFC XXXX: A YANG Data Model for Network Inventory Software
-                 Extensions.";
+      "RFC XXXX: A YANG Data Model for Network Inventory Software.";
   }
 
-  identity ne-nonphysical {
+  identity ne-software-based {
     base nwi:ne-type;
     description
-      "Any network element implemented purely in software.
+      "Any network element (NE) implemented purely in software.
        It performs protocol or forwarding functions but
        does not correspond to a distinguishable hardware
        chassis. It can be hosted on a bare-metal server,
-       VM, container, or cloud instance.";
-  }
-
-  identity ne-software {
-    base ne-nonphysical;
-    description
-      "Software NE that runs directly on a host OS
-       (also known as bare-metal deployment) or hypervisor.
-       Examples of software NEs are network controllers.";
-  }
-
-  identity ne-virtual {
-    base ne-nonphysical;
-    description
-      "Virtual NE instantiated inside a virtual-machine
-       (VM). Provides virtual network function (VNF) implementations
-       such as vRouter, vFirewall, vPE.";
-  }
-
-  identity ne-container {
-    base ne-nonphysical;
-    description
-      "Container NE packaged as CNF (Containerised Network
-       Function). Runs under Docker/K8s.";
+       in a virtual machine (VM), in a container, or on
+       cloud instance.";
   }
 
   identity software-component {
     base nwi:non-hardware-component-class;
     description
-      "Base identity for software components in a managed device.";
+      "Base identity for software components in a managed NE.";
   }
 
   identity operating-system {
     base software-component;
     description
-      "Operating system software type.";
+      "Operating system (OS) software type.";
   }
 
   identity bios {
@@ -1593,44 +1608,64 @@ module ietf-network-inventory-sw-ext {
 
   identity software-status {
     description
-      "Base identity for software status.";
+      "Base identity for the lifecycle status of non-running
+       software.  This identity is used only by the
+       'installed-software' list. Running software is identified
+       by its presence in the base 'software-rev' list and does
+       not carry a 'status' leaf.";
   }
 
   identity software-installed {
     base software-status;
     description
-      "Software or patch is installed on the network element
-          or component but not yet active.";
+      "Software or patch is installed on the network element or
+       component but not yet administratively active.";
   }
 
-  identity software-activated {
+  identity software-activated-pending-reload {
     base software-status;
     description
-      "Software or patch is active and taking effect
-          on the network element or component.";
+      "Software or patch is administratively activated but not
+       yet running; a reload is required for it to take effect
+       (e.g., cold patch or cold upgrade).
+       After the reload completes, this installed entry is removed,
+       and the corresponding running version appears in
+       'software-rev'.";
   }
 
-  grouping software-info-grouping {
+  grouping installed-software-grouping {
     description
-      "Specific attributes applicable to software.";
+      "Attributes of software that is present on the NE but
+       not currently running.";
+    leaf name {
+      type string;
+      description
+        "Name of the software.";
+    }
+    leaf revision {
+      type string;
+      description
+        "Revision of the software.";
+    }
     leaf status {
       type identityref {
         base software-status;
       }
+      must "derived-from-or-self(., 'software-installed') or "
+         + "derived-from-or-self(., "
+         + "'software-activated-pending-reload')" {
+        error-message
+          "Only 'software-installed' or "
+        + "'software-activated-pending-reload' are allowed "
+        + "for non-running software.";
+      }
       description
-        "Software status.";
+        "Lifecycle status of this non-running software.";
     }
     leaf installation-time {
       type yang:date-and-time;
       description
-        "Time when the software or patch revision was
-         first installed.";
-    }
-    leaf activation-time {
-      type yang:date-and-time;
-      description
-        "Time when the currently installed revision became active
-         (i.e., was rebooted into).";
+        "Time when this software or patch was first installed.";
     }
   }
 
@@ -1639,156 +1674,217 @@ module ietf-network-inventory-sw-ext {
   augment "/nwi:network-inventory/nwi:network-elements"
         + "/nwi:network-element/nwi:software-rev" {
     description
-      "Adds installation-/activation-time, status, etc. to the base
-       NE software revision.";
-    uses software-info-grouping;
+      "Adds installation-time and activation-time to the
+       base NE software revision.
+       The base list reports running software only; presence in
+       this list implies that the software is running.";
+    leaf installation-time {
+      type yang:date-and-time;
+      description
+        "Time when this running software revision was first
+         installed.";
+    }
+    leaf activation-time {
+      type yang:date-and-time;
+      description
+        "Time when this running software revision first entered
+         the activated state.";
+    }
   }
 
   augment "/nwi:network-inventory/nwi:network-elements"
-        + "/nwi:network-element/nwi:software-rev/nwi:patch" {
+        + "/nwi:network-element" {
     description
-      "Adds installation-/activation-time, status, etc. to the patch
-       level.";
-    uses software-info-grouping;
+      "Adds the installed-software list at the NE level.";
+    list installed-software {
+      key "name revision";
+      description
+        "Software that is present on the NE but not currently
+         running.  This includes software that is installed but
+         not administratively activated, and software that
+         has been administratively activated but requires
+         a reload to take effect (e.g., cold patch or
+         cold upgrade).  Entries in this list MUST NOT
+         appear in the base 'software-rev' list.  When an entry
+         becomes running, the corresponding version appears in
+         'software-rev', and this installed-software entry
+         is removed.";
+      uses installed-software-grouping;
+    }
+  }
+
+  augment "/nwi:network-inventory/nwi:network-elements/"
+        + "nwi:network-element/nwi:components/nwi:component" {
+    description
+      "Adds the installed-software list at the component level.";
+    list installed-software {
+      key "name revision";
+      description
+        "Software that is present on the component but not
+         currently running.";
+      uses installed-software-grouping;
+    }
   }
 
   augment "/nwi:network-inventory/nwi:network-elements/"
         + "nwi:network-element/nwi:components/nwi:component/"
         + "nwi:software-rev" {
     description
-      "Extends components, such as line-card/CPU/etc.
-       software revision with timestamp and state information.";
-    uses software-info-grouping;
-  }
-
-  augment "/nwi:network-inventory/nwi:network-elements/"
-        + "nwi:network-element/nwi:components/nwi:component/"
-        + "nwi:software-rev/nwi:patch" {
-    description
-      "Applies the software-info attributes to component-level
-       patches.";
-    uses software-info-grouping;
+      "Adds installation-time and activation-time to
+       component-level running software revisions.  The base
+       list reports running software only; presence in this list
+       implies that the software is running.";
+    leaf installation-time {
+      type yang:date-and-time;
+      description
+        "Time when this running software revision was first
+         installed.";
+    }
+    leaf activation-time {
+      type yang:date-and-time;
+      description
+        "Time when this running software revision first entered
+         the activated state.";
+    }
   }
 }
 
-&lt;CODE ENDS&gt;</pre><a href="#section-6-2" class="pilcrow">¶</a>
+&lt;CODE ENDS&gt;</pre><a href="#section-3-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="operational-considerations">
-<section id="section-7">
+<section id="section-4">
       <h2 id="name-operational-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
       </h2>
-<p id="section-7-1">This section complements the operational considerations of the
+<p id="section-4-1">This section complements the operational considerations of the
    base network inventory model <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.
    The considerations of <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>
    also apply to this extension: the read-only perspective of
    inventory data, data discovery by the server from underlying
    elements, aggregation at hierarchical controller interfaces,
-   and brownfield migration scenarios.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">This model provides read-only reporting of software status and
+   and brownfield migration scenarios.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">This model provides read-only reporting of software status and
    associated timestamps.  It reflects the state of software
    revisions and patches as discovered by the server; it does not
-   track software configuration intent or repository state.<a href="#section-7-2" class="pilcrow">¶</a></p>
-<p id="section-7-3">The software inventory data is discovered by the server from
-   underlying managed entities using implementation-specific
-   mechanisms.  The installation-time and activation-time
-   timestamps, as well as the software status (installed or
-   activated), are reported as discovered from the managed entity.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">Software lifecycle management operations (install,
-   activate, remove, etc.) are out of scope and could be defined
-   in separate YANG modules.<a href="#section-7-4" class="pilcrow">¶</a></p>
+   track software configuration intent or repository state.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">The model is not intended to expose every internal software component
+   present on the network element. It only covers operator-relevant, separately
+   versionable and independently upgradable software artifacts, such as base OS images,
+   line-card FPGA firmware, separable feature modules, and hotfix patches. Embedded static
+   libraries and fine-grained internal sub-components that cannot be independently managed
+   or upgraded are out of scope.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">The base 'software-rev' list reports running software only.  Presence
+   of an entry in 'software-rev' implies that the software is running.
+   The 'installed-software' list reports software that is present but
+   not running, including software that is installed but not activated,
+   and software that has been activated but is pending a reload (cold patch
+   or cold upgrade).<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">Full software lifecycle management (install, activate, rollback,
+   remove operations, etc.) is out of scope of this document and could be
+   defined in separate YANG modules.<a href="#section-4-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-8">
+<section id="section-5">
       <h2 id="name-security-considerations">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-8-1">This section is modeled after the template described in <span><a href="https://rfc-editor.org/rfc/rfc9907#section-3.7" class="relref">Section 3.7</a> of [<a href="#RFC9907" class="cite xref">RFC9907</a>]</span>.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">The "ietf-network-inventory-sw-ext" YANG module augments the base
+<p id="section-5-1">This section is modeled after the template described in <span><a href="https://rfc-editor.org/rfc/rfc9907#section-3.7" class="relref">Section 3.7</a> of [<a href="#RFC9907" class="cite xref">RFC9907</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">The "ietf-network-inventory-software" YANG module augments the base
    network inventory model defined in <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.
    All security considerations specified in the base model apply to this
    extension module. This section complements the base model with
-   additional security considerations specific to software inventory
-   extensions.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">The "ietf-network-inventory-sw-ext" YANG module defines a data model that is
+   additional security considerations specific to inventory software
+   extensions.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">The "ietf-network-inventory-software" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
 NETCONF <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> and RESTCONF <span>[<a href="#RFC8040" class="cite xref">RFC8040</a>]</span>. These YANG-based management
 protocols (1) have to use a secure transport layer (e.g., SSH <span>[<a href="#RFC4252" class="cite xref">RFC4252</a>]</span>, TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>,
-and QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>) and (2) have to use mutual authentication.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">The Network Configuration Access Control Model (NACM) <span>[<a href="#RFC8341" class="cite xref">RFC8341</a>]</span>
+and QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>) and (2) have to use mutual authentication.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">The Network Configuration Access Control Model (NACM) <span>[<a href="#RFC8341" class="cite xref">RFC8341</a>]</span>
 provides the means to restrict access for particular NETCONF or
 RESTCONF users to a preconfigured subset of all available NETCONF or
-RESTCONF protocol operations and content.<a href="#section-8-4" class="pilcrow">¶</a></p>
-<p id="section-8-5">Some of the readable data nodes in this YANG module may be considered
+RESTCONF protocol operations and content.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">Some of the readable data nodes in this YANG module may be considered
 sensitive or vulnerable in some network environments.  It is thus
 important to control read access (e.g., via get, get-config, or
-notification) to these data nodes.<a href="#section-8-5" class="pilcrow">¶</a></p>
-<p id="section-8-6">Specifically, the following subtrees and data nodes have particular sensitivities/vulnerabilities:<a href="#section-8-6" class="pilcrow">¶</a></p>
+notification) to these data nodes.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">Specifically, the following subtrees and data nodes have particular sensitivities/vulnerabilities:<a href="#section-5-6" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-8-7.1">
-          <p id="section-8-7.1.1">"/nwi:network-elements/network-element/software-rev"<a href="#section-8-7.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5-7.1">
+          <p id="section-5-7.1.1">"/nwi:network-elements/nwi:network-element/nwi:software-rev"<a href="#section-5-7.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-8-7.2">
-          <p id="section-8-7.2.1">"/nwi:network-elements/network-element/software-rev/patch"<a href="#section-8-7.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-5-7.2">
+          <p id="section-5-7.2.1">"/nwi:network-elements/nwi:network-element/nwi:software-rev/nwi:patch"<a href="#section-5-7.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-8-7.3">
-          <p id="section-8-7.3.1">"/nwi:network-elements/network-element/components/component/software-rev"<a href="#section-8-7.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-5-7.3">
+          <p id="section-5-7.3.1">"/nwi:network-elements/nwi:network-element/nwis:installed-software"<a href="#section-5-7.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-8-7.4">
-          <p id="section-8-7.4.1">"/nwi:network-elements/network-element/component/component/software-rev/patch"
-&gt; These extension add status, installation time, and activation time
-to both NE-level and component-level software revisions and patches.
-Disclosure of detailed software versions, patch levels, and
-lifecycle timestamps can reveal unpatched vulnerabilities and
-operational maintenance windows, enabling targeted attacks.<a href="#section-8-7.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-5-7.4">
+          <p id="section-5-7.4.1">"/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwi:software-rev"<a href="#section-5-7.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-7.5">
+          <p id="section-5-7.5.1">"/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwi:software-rev/nwi:patch"<a href="#section-5-7.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-5-7.6">
+          <p id="section-5-7.6.1">"/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwis:installed-software"<a href="#section-5-7.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
+<p id="section-5-8">These extensions add installation and activation timestamps for
+running software, plus a separate installed-software list for both
+NE-level and component-level. Disclosure of detailed
+software versions, patch levels, and lifecycle timestamps can reveal
+unpatched vulnerabilities and operational maintenance windows,
+enabling targeted attacks.<a href="#section-5-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-9">
+<section id="section-6">
       <h2 id="name-iana-considerations">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-9-1">IANA is requested to register the following URI in the "ns" subregistry within
-the "IETF XML Registry" <span>[<a href="#RFC3688" class="cite xref">RFC3688</a>]</span>:<a href="#section-9-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-9-2">
+<p id="section-6-1">IANA is requested to register the following URI in the "ns" subregistry within
+the "IETF XML Registry" <span>[<a href="#RFC3688" class="cite xref">RFC3688</a>]</span>:<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6-2">
 <pre>
-URI:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-sw-ext
+URI:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-software
 Registrant Contact:  The IESG.
 XML:  N/A; the requested URI is an XML namespace.
-</pre><a href="#section-9-2" class="pilcrow">¶</a>
+</pre><a href="#section-6-2" class="pilcrow">¶</a>
 </div>
-<p id="section-9-3">IANA is requested to register the following YANG module in the "YANG Module
-Names" registry <span>[<a href="#RFC6020" class="cite xref">RFC6020</a>]</span> within the "YANG Parameters" registry group:<a href="#section-9-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-9-4">
+<p id="section-6-3">IANA is requested to register the following YANG module in the "YANG Module
+Names" registry <span>[<a href="#RFC6020" class="cite xref">RFC6020</a>]</span> within the "YANG Parameters" registry group:<a href="#section-6-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6-4">
 <pre>
-Name:  ietf-network-inventory-sw-ext
-Namespace:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-sw-ext
+Name:  ietf-network-inventory-software
+Namespace:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-software
 Prefix:  nwis
 Maintained by IANA?  N
 Reference:  RFC XXXX
-</pre><a href="#section-9-4" class="pilcrow">¶</a>
+</pre><a href="#section-6-4" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="sec-combined-references">
-<section id="section-10">
+<section id="section-7">
       <h2 id="name-references">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-10.1">
+<section id="section-7.1">
         <h3 id="name-normative-references">
-<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="I-D.ietf-ivy-network-inventory-yang">[I-D.ietf-ivy-network-inventory-yang]</dt>
         <dd>
-<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-18</span>, <time datetime="2026-05-27" class="refDate">27 May 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-18">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-18</a>&gt;</span>. </dd>
+<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-20</span>, <time datetime="2026-09-29" class="refDate">29 September 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-20">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-20</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3688">[RFC3688]</dt>
         <dd>
@@ -1798,13 +1894,13 @@ Reference:  RFC XXXX
         <dd>
 <span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refTitle">"YANG - A Data Modeling Language for the Network Configuration Protocol (NETCONF)"</span>, <span class="seriesInfo">RFC 6020</span>, <span class="seriesInfo">DOI 10.17487/RFC6020</span>, <time datetime="2010-10" class="refDate">October 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6020">https://www.rfc-editor.org/rfc/rfc6020</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC6241">[RFC6241]</dt>
-        <dd>
-<span class="refAuthor">Enns, R., Ed.</span>, <span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refAuthor">Schoenwaelder, J., Ed.</span>, and <span class="refAuthor">A. Bierman, Ed.</span>, <span class="refTitle">"Network Configuration Protocol (NETCONF)"</span>, <span class="seriesInfo">RFC 6241</span>, <span class="seriesInfo">DOI 10.17487/RFC6241</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6241">https://www.rfc-editor.org/rfc/rfc6241</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC7950">[RFC7950]</dt>
         <dd>
 <span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refTitle">"The YANG 1.1 Data Modeling Language"</span>, <span class="seriesInfo">RFC 7950</span>, <span class="seriesInfo">DOI 10.17487/RFC7950</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7950">https://www.rfc-editor.org/rfc/rfc7950</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8341">[RFC8341]</dt>
         <dd>
@@ -1822,14 +1918,18 @@ Reference:  RFC XXXX
 </section>
 </div>
 <div id="sec-informative-references">
-<section id="section-10.2">
+<section id="section-7.2">
         <h3 id="name-informative-references">
-<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="RFC4252">[RFC4252]</dt>
         <dd>
 <span class="refAuthor">Ylonen, T.</span> and <span class="refAuthor">C. Lonvick, Ed.</span>, <span class="refTitle">"The Secure Shell (SSH) Authentication Protocol"</span>, <span class="seriesInfo">RFC 4252</span>, <span class="seriesInfo">DOI 10.17487/RFC4252</span>, <time datetime="2006-01" class="refDate">January 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4252">https://www.rfc-editor.org/rfc/rfc4252</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6241">[RFC6241]</dt>
+        <dd>
+<span class="refAuthor">Enns, R., Ed.</span>, <span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refAuthor">Schoenwaelder, J., Ed.</span>, and <span class="refAuthor">A. Bierman, Ed.</span>, <span class="refTitle">"Network Configuration Protocol (NETCONF)"</span>, <span class="seriesInfo">RFC 6241</span>, <span class="seriesInfo">DOI 10.17487/RFC6241</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6241">https://www.rfc-editor.org/rfc/rfc6241</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8040">[RFC8040]</dt>
         <dd>
@@ -1865,15 +1965,22 @@ Reference:  RFC XXXX
       <h2 id="name-examples-of-software-attrib">
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-examples-of-software-attrib" class="section-name selfRef">Examples of Software Attributes</a>
       </h2>
-<p id="appendix-A-1">This appendix illustrates, by means of two typical scenarios, how to
+<p id="appendix-A-1">This appendix illustrates, by means of four typical scenarios, how to
  populate the software-specific nodes defined in
- ietf-network-inventory-sw-ext and explains the common values that can be used.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<p id="appendix-A-2">Scenario 1: Whole-device base software (example-os) plus hot patches
- (P3 already activated, P4 installed but not yet activated).<a href="#appendix-A-2" class="pilcrow">¶</a></p>
-<p id="appendix-A-3">Scenario 2: Line-card programmable forwarding image
- (example-fpga-image) plus its patch
- (2.1.0.P1 installed and awaiting activation).<a href="#appendix-A-3" class="pilcrow">¶</a></p>
-<div class="breakable lang-json sourcecode" id="appendix-A-4">
+ "ietf-network-inventory-software".<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-2">Scenario 1: Whole-device base software (example-os) running, with a
+   hot patch (P3) already running and a hot patch (P4) installed but not
+   yet activated. A line-card programmable forwarding image (example-fpga-image)
+   is running, with a cold patch (2.1.0.P1) administratively activated and pending reload.
+   An independent telemetry software module (telemetry-module) is running, with a newer
+   revision (1.6.0) installed but not yet activated.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
+<p id="appendix-A-3">Scenario 2: Whole-device cold upgrade, where a new base software revision (8.0.0) has been
+ installed and is pending reload.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
+<p id="appendix-A-4">Scenario 3: Software-based virtual router running its base software (vrouter-os)
+ with an active hotfix (Hotfix-05), and a newer base revision (24.06) installed but not yet activated.<a href="#appendix-A-4" class="pilcrow">¶</a></p>
+<p id="appendix-A-5">Scenario 4: Whole-device base software (example-os) running, with an independent hotfix (os-hotfix-P5)
+modelled as a separate top-level software-rev entry.<a href="#appendix-A-5" class="pilcrow">¶</a></p>
+<div class="breakable lang-json sourcecode" id="appendix-A-6">
 <pre>
 =============== NOTE: '\' line wrapping per RFC 8792 ================
 
@@ -1883,36 +1990,23 @@ Reference:  RFC XXXX
       "network-element": [
         {
           "ne-id": "example:NE-01",
+          "ne-type": "ietf-network-inventory:ne-physical",
+          "name": "router-base-os-demo",
+          "description": "Physical router with base OS, line-card \
+            FPGA firmware and independent telemetry software module",
           "software-rev": [
             {
-              "name": "example:ne-os",
+              "name": "example-os",
               "revision": "7.9.2",
-              "ietf-network-inventory-sw-ext:status": "software-\
-                                                          activated",
-              "ietf-network-inventory-sw-ext:installation-time": "\
-                                               2024-08-01T12:00:00Z",
-              "ietf-network-inventory-sw-ext:activation-time": "2024\
-                                                   -08-01T12:05:00Z",
               "patch": [
                 {
-                  "revision": "P3",
-                  "ietf-network-inventory-sw-ext:status": "software-\
-                                                          activated",
-                  "ietf-network-inventory-sw-ext:installation-time"\
-                                            : "2024-09-15T10:30:00Z",
-                  "ietf-network-inventory-sw-ext:activation-time": "\
-                                                2024-09-15T10:32:00Z"
-                },
-                {
-                  "revision": "P4",
-                  "ietf-network-inventory-sw-ext:status": "software-\
-                                                          installed",
-                  "ietf-network-inventory-sw-ext:installation-time"\
-                                            : "2024-10-01T14:00:00Z",
-                  "ietf-network-inventory-sw-ext:activation-time": \
-                                                                 null
+                  "revision": "P3"
                 }
-              ]
+              ],
+              "ietf-network-inventory-software:installation-time": "\
+                                               2024-08-01T12:00:00Z",
+              "ietf-network-inventory-software:activation-time": "\
+                                                2024-08-01T12:05:00Z"
             }
           ],
           "components": {
@@ -1920,37 +2014,164 @@ Reference:  RFC XXXX
               {
                 "component-id": "example:lpu/1/0",
                 "class": "iana-hardware:module",
+                "description": "Line processing unit with FPGA \
+                                                           firmware",
                 "software-rev": [
                   {
-                    "name": "example-fp-image",
+                    "name": "example-fpga-image",
                     "revision": "2.1.0",
-                    "ietf-network-inventory-sw-ext:status": "\
-                                                 software-activated",
-                    "ietf-network-inventory-sw-ext:installation-time\
-                                           ": "2024-08-01T12:00:00Z",
-                    "ietf-network-inventory-sw-ext:activation-time"\
-                                            : "2024-08-01T12:06:00Z",
-                    "patch": [
-                      {
-                        "revision": "2.1.0.P1",
-                        "ietf-network-inventory-sw-ext:status": "\
+                    "patch": [],
+                    "ietf-network-inventory-software:installation-\
+                                       time": "2024-08-01T12:00:00Z",
+                    "ietf-network-inventory-software:activation-time\
+                                            ": "2024-08-01T12:06:00Z"
+                  }
+                ],
+                "ietf-network-inventory-software:installed-software"\
+                                                                  : [
+                  {
+                    "name": "example-fpga-image-2.1.0.P1",
+                    "revision": "2.1.0.P1",
+                    "status": "ietf-network-inventory-software:\
+                                  software-activated-pending-reload",
+                    "installation-time": "2024-10-01T14:10:00Z"
+                  }
+                ]
+              },
+              {
+                "component-id": "example:feature-telemetry",
+                "class": "ietf-network-inventory-software:software-\
+                                                             module",
+                "description": "Telemetry feature software module",
+                "software-rev": [
+                  {
+                    "name": "telemetry-module",
+                    "revision": "1.5.1",
+                    "patch": [],
+                    "ietf-network-inventory-software:installation-\
+                                       time": "2024-08-02T09:00:00Z",
+                    "ietf-network-inventory-software:activation-time\
+                                            ": "2024-08-02T09:05:00Z"
+                  }
+                ],
+                "ietf-network-inventory-software:installed-software"\
+                                                                  : [
+                  {
+                    "name": "telemetry-module",
+                    "revision": "1.6.0",
+                    "status": "ietf-network-inventory-software:\
                                                  software-installed",
-                        "ietf-network-inventory-sw-ext:installation-\
-                                       time": "2024-10-01T14:10:00Z",
-                        "activation-time": null
-                      }
-                    ]
+                    "installation-time": "2024-11-02T11:30:00Z"
                   }
                 ]
               }
             ]
-          }
+          },
+          "ietf-network-inventory-software:installed-software": [
+            {
+              "name": "example-os-P4",
+              "revision": "P4",
+              "status": "ietf-network-inventory-software:software-\
+                                                          installed",
+              "installation-time": "2024-10-01T14:00:00Z"
+            }
+          ]
+        },
+        {
+          "ne-id": "example:NE-02",
+          "ne-type": "ietf-network-inventory:ne-physical",
+          "name": "router-os-upgrade-pending-reload",
+          "description": "Physical router with new OS version \
+                           installed, pending reload for activation",
+          "software-rev": [
+            {
+              "name": "example-os",
+              "revision": "7.9.2",
+              "patch": [],
+              "ietf-network-inventory-software:installation-time": "\
+                                               2024-08-01T12:00:00Z",
+              "ietf-network-inventory-software:activation-time": "\
+                                                2024-08-01T12:05:00Z"
+            }
+          ],
+          "components": {},
+          "ietf-network-inventory-software:installed-software": [
+            {
+              "name": "example-os",
+              "revision": "8.0.0",
+              "status": "ietf-network-inventory-software:software-\
+                                           activated-pending-reload",
+              "installation-time": "2024-11-01T09:00:00Z"
+            }
+          ]
+        },
+        {
+          "ne-id": "example:NE-03",
+          "ne-type": "ietf-network-inventory-software:ne-software-\
+                                                              based",
+          "name": "vrouter-01",
+          "description": "Virtual router deployed as VM (VNF) to \
+                                      demonstrate software-based NE",
+          "software-rev": [
+            {
+              "name": "vrouter-os",
+              "revision": "24.03",
+              "patch": [
+                {
+                  "revision": "Hotfix-05"
+                }
+              ],
+              "ietf-network-inventory-software:installation-time": "\
+                                               2024-09-10T08:00:00Z",
+              "ietf-network-inventory-software:activation-time": "\
+                                                2024-09-10T08:15:00Z"
+            }
+          ],
+          "components": {},
+          "ietf-network-inventory-software:installed-software": [
+            {
+              "name": "vrouter-os",
+              "revision": "24.06",
+              "status": "ietf-network-inventory-software:software-\
+                                                          installed",
+              "installation-time": "2024-11-05T10:20:00Z"
+            }
+          ]
+        },
+        {
+          "ne-id": "example:NE-04",
+          "ne-type": "ietf-network-inventory:ne-physical",
+          "name": "router-hotfix-demo",
+          "description": "Physical router demonstrating \
+                                 independently applied hotfix patch",
+          "software-rev": [
+            {
+              "name": "example-os",
+              "revision": "7.9.2",
+              "patch": [],
+              "ietf-network-inventory-software:installation-time": "\
+                                               2024-08-01T12:00:00Z",
+              "ietf-network-inventory-software:activation-time": "\
+                                                2024-08-01T12:05:00Z"
+            },
+            {
+              "name": "os-hotfix-P5",
+              "revision": "P5",
+              "patch": [],
+              "ietf-network-inventory-software:installation-time": "\
+                                               2024-11-10T15:00:00Z",
+              "ietf-network-inventory-software:activation-time": "\
+                                                2024-11-10T15:10:00Z"
+            }
+          ],
+          "components": {},
+          "ietf-network-inventory-software:installed-software": []
         }
       ]
     }
   }
 }
-</pre><a href="#appendix-A-4" class="pilcrow">¶</a>
+</pre><a href="#appendix-A-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1959,9 +2180,9 @@ Reference:  RFC XXXX
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-B-1">The authors would like to thank Prasenjit Manna, Phil Bedard, Diego R.
-      Lopez, Italo Busi, Adrian Farrel, and many others for their helpful comments and
-      suggestions.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">The authors would like to thank Chongfeng Xie, Prasenjit Manna, Phil Bedard, Diego R.Lopez,
+Italo Busi, Adrian Farrel, and many others for their helpful comments and
+suggestions. The authors also thank Reshad Rahman for the YANG doctor review.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="contributors">
