@@ -13,7 +13,7 @@ Expires: 4 May 2027                                         China Mobile
                                                          31 October 2026
 
 
-        A YANG Network Data Model of Network Inventory Software
+            A YANG Data Model of Network Inventory Software
             draft-ietf-ivy-network-inventory-software-latest
 
 Abstract
