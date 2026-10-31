@@ -51,7 +51,7 @@ module ietf-network-inventory-software {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2026-10-30 {
+  revision 2026-10-31 {
     description
       "Initial version";
     reference
@@ -69,30 +69,6 @@ module ietf-network-inventory-software {
        cloud instance.";
   }
 
-  identity ne-baremetal-software {
-    base ne-software-based;
-    description
-      "Software NE that runs directly on a host OS
-       (also known as bare-metal deployment).
-       Examples of software NEs are network controllers.";
-  }
-
-  identity ne-vm {
-    base ne-software-based;
-    description
-      "Virtual NE instantiated inside a VM. Provides
-       virtual network function (VNF) implementations
-       such as vRouter, vFirewall, vPE.";
-  }
-
-  identity ne-container {
-    base ne-software-based;
-    description
-      "Container NE packaged as a containerized network
-       function(CNF). It runs in a container runtime environment
-       (e.g., Docker).";
-  }
-
   identity software-component {
     base nwi:non-hardware-component-class;
     description
@@ -102,10 +78,7 @@ module ietf-network-inventory-software {
   identity operating-system {
     base software-component;
     description
-      "Operating system (OS) software type. Feature packages
-       running within the OS are represented as entries in
-       this component's 'software-rev' and 'installed-software'
-       lists.";
+      "Operating system (OS) software type.";
   }
 
   identity bios {
@@ -120,6 +93,13 @@ module ietf-network-inventory-software {
     description
       "Software layer responsible for loading and booting the
        device OS or network OS.";
+  }
+
+  identity software-module {
+    base software-component;
+    description
+      "Installable unit smaller than a full OS image,
+       e.g., feature package.";
   }
 
   identity software-status {
