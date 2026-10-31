@@ -97,7 +97,6 @@ Please apply the following replacements:
 The following terms are defined in {{!RFC7950}} and are not
 redefined here:
 
-*  client
 *  server
 *  augment
 *  data model
