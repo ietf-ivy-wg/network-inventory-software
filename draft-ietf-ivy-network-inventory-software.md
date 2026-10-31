@@ -246,7 +246,7 @@ The "ietf-network-inventory-software" module uses types defined in {{!RFC9911}},
    associated timestamps.  It reflects the state of software
    revisions and patches as discovered by the server; it does not
    track software configuration intent or repository state.
-   
+
    The model is not intended to expose every internal software component
    present on the network element. It only covers operator-relevant, separately
    versionable and independently upgradable software artifacts, such as base OS images,
