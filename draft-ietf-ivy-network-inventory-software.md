@@ -115,12 +115,14 @@ Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang
 *  Component: See Section 2.2 of [I-D.ietf-ivy-network-inventory-yang].
 *  Software Components: See Section 3.3.2 of [I-D.ietf-ivy-network-inventory-yang].
 
-# Relationship to Other YANG Data Models
+# YANG Data Model for Network Inventory Software Overview
+
+## Relationship to Other YANG Data Models
 
 The base network inventory model supports the software versions of
 NEs and software versions of hardware components. This document adds
 more software component identifiers (e.g., platform OS), software NE type,
-and software lifecycle status and time stamp information to provide enhanced
+and software lifecycle status and time stamp information to provide extended
 software information on the NE to facilitate software compatibility check.
 
 {{fig-ni-sw-mod-relation}} depicts the relationship between
@@ -146,9 +148,7 @@ The network inventory software model adds more software specific attributes.
 ~~~~
 {: #fig-ni-sw-mod-relation title="Relationship of SW Extension Model to the Base Inventory Model" artwork-align="center"}
 
-
-
-# Model Overview
+## Network Inventory Software Tree Diagram
 
 The tree diagram in {{full-tree}} provides an overview of the data model for "ietf-network-inventory-software"
       module.
@@ -182,7 +182,7 @@ In addition, the model introduces:
 ~~~~~~~~~~
 {: #full-tree title="YANG Tree of Network Inventory Software" artwork-align="center"}
 
-# Software-based Network Elements
+## Software-based Network Elements
 
 In the base Network Inventory YANG model, "ne-type" is a YANG
 identity that describes the type of the network element and only the
@@ -199,7 +199,7 @@ but does not correspond to a distinguishable hardware chassis.
 It may be hosted on bare-metal server, in a virtual machine,
 container, or cloud compute instance.
 
-# Software Components
+## Software Components
 
 Software components refer to the software installed on the NE, such
 as operating system, software modules, BIOS, and boot loaders.
@@ -222,7 +222,7 @@ The base "software-rev" list reports software that is currently
    are mutually exclusive: an entry MUST NOT appear in both lists at the
    same time.
 
-# YANG Data model for Network Inventory Software Extensions
+# YANG Data model for Network Inventory Software
 
 The "ietf-network-inventory-software" module uses types defined in {{!RFC9911}},
    {{!I-D.ietf-ivy-network-inventory-yang}}.
@@ -246,6 +246,13 @@ The "ietf-network-inventory-software" module uses types defined in {{!RFC9911}},
    associated timestamps.  It reflects the state of software
    revisions and patches as discovered by the server; it does not
    track software configuration intent or repository state.
+   
+   The model is not intended to expose every internal software component
+   present on the network element. It only covers operator-relevant, separately
+   versionable and independently upgradable software artifacts, such as base OS images,
+   line-card FPGA firmware, separable feature modules, and hotfix patches. Embedded static
+   libraries and fine-grained internal sub-components that cannot be independently managed
+   or upgraded are out of scope.
 
    The base 'software-rev' list reports running software only.  Presence
    of an entry in 'software-rev' implies that the software is running.
