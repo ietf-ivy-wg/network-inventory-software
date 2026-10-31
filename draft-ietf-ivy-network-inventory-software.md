@@ -113,6 +113,8 @@ Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang
 *  Component: See {{Section 2.2 of I-D.ietf-ivy-network-inventory-yang}}.
 *  Software Components: See {{Section 3.3.2 of I-D.ietf-ivy-network-inventory-yang}}.
 
+Some examples in this document contain long lines that may be folded, as described in {{?RFC8792}}.
+
 # YANG Data Model for Network Inventory Software Overview
 
 ## Relationship to Other YANG Data Models
