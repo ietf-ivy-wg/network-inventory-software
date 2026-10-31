@@ -77,11 +77,7 @@ The management of software-based NE and software components information
       components (such as operating system, software modules, BIOS, and boot
       loader).
 
-The Network Inventory software model is classified as a
-      network model (Section 4 of  {{?RFC8309}}).
-
-The YANG data model in this document conforms to the Network
-Management Datastore Architecture (NMDA) defined in {{!RFC8342}}.
+The Network Inventory software model is classified as a network model ({{Section 4 of  ?RFC8309}}).
 
 ## Editorial Note (To be removed by RFC Editor)
 
@@ -110,12 +106,12 @@ redefined here:
 The tree diagram used in this document follows the notation defined
    in {{?RFC8340}}.
 
-Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang}}.
+Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang}}, specifically:
 
-*  Network Inventory: See Section 2.2 of [I-D.ietf-ivy-network-inventory-yang].
-*  Network Element: See Section 2.2 of [I-D.ietf-ivy-network-inventory-yang].
-*  Component: See Section 2.2 of [I-D.ietf-ivy-network-inventory-yang].
-*  Software Components: See Section 3.3.2 of [I-D.ietf-ivy-network-inventory-yang].
+*  Network Inventory: See {{Section 2.2 of I-D.ietf-ivy-network-inventory-yang}}.
+*  Network Element: See {{Section 2.2 of I-D.ietf-ivy-network-inventory-yang}}.
+*  Component: See {{Section 2.2 of I-D.ietf-ivy-network-inventory-yang}}.
+*  Software Components: See {{Section 3.3.2 of I-D.ietf-ivy-network-inventory-yang}}.
 
 # YANG Data Model for Network Inventory Software Overview
 
@@ -131,7 +127,7 @@ software information on the NE to facilitate software compatibility check.
 the network inventory software model and the base network inventory model.
 The network inventory software model adds more software specific attributes.
 
-~~~~ ascii-art
+~~~~ aasvg
 +----------------------+
 |                      |
 |Base Network Inventory|
@@ -210,7 +206,7 @@ Similar to the common inventory attributes of NEs, the common
 attributes of software components (such as software revisions,
 patch revisions, product name, and serial number) are also applicable to
 software components. For software revisions and patch revisions, the base inventory
-(Section 4 of {{!I-D.ietf-ivy-network-inventory-yang}})
+({{Section 4 of !I-D.ietf-ivy-network-inventory-yang}})
 defines the "list" of "software-rev" and the "list" of
 "patch". For example, on a router, software components may
 include a routing protocol package (e.g., "foo-rt-protocol-suite"),
@@ -224,10 +220,9 @@ The base "software-rev" list reports software that is currently
    are mutually exclusive: an entry MUST NOT appear in both lists at the
    same time.
 
-# YANG Data model for Network Inventory Software
+# YANG Data Model for Network Inventory Software
 
-The "ietf-network-inventory-software" module uses types defined in {{!RFC9911}},
-   {{!I-D.ietf-ivy-network-inventory-yang}}.
+The "ietf-network-inventory-software" module uses types defined in {{!RFC9911}} and {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~ yang
 {::include-fold ./ietf-network-inventory-software.yang}
@@ -281,8 +276,8 @@ The "ietf-network-inventory-software" YANG module augments the base
 
 The "ietf-network-inventory-software" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
-NETCONF {{?RFC6241}} and RESTCONF {{?RFC8040}}. These YANG-based management
-protocols (1) have to use a secure transport layer (e.g., SSH {{?RFC4252}}, TLS {{?RFC8446}},
+Network Configuration Protocol (NETCONF)  {{?RFC6241}} and RESTCONF {{?RFC8040}}. These YANG-based management
+protocols (1) have to use a secure transport layer (e.g., Secure Shell (SSH) {{?RFC4252}}, TLS {{?RFC9846}},
 and QUIC {{?RFC9000}}) and (2) have to use mutual authentication.
 
 The Network Configuration Access Control Model (NACM) {{!RFC8341}}
@@ -293,9 +288,7 @@ RESTCONF protocol operations and content.
 Some of the readable data nodes in this YANG module may be considered
 sensitive or vulnerable in some network environments.  It is thus
 important to control read access (e.g., via get, get-config, or
-notification) to these data nodes.
-
-Specifically, the following subtrees and data nodes have particular sensitivities/vulnerabilities:
+notification) to these data nodes. Specifically, the following subtrees and data nodes have particular sensitivities/vulnerabilities:
 
 - "/nwi:network-elements/nwi:network-element/nwi:software-rev"
 - "/nwi:network-elements/nwi:network-element/nwi:software-rev/nwi:patch"
