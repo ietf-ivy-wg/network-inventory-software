@@ -328,20 +328,25 @@ Reference:  RFC XXXX
 
 # Examples of Software Attributes
 
-This appendix illustrates, by means of three typical scenarios, how to
+This appendix illustrates, by means of four typical scenarios, how to
  populate the software-specific nodes defined in
  "ietf-network-inventory-software".
 
 Scenario 1: Whole-device base software (example-os) running, with a
    hot patch (P3) already running and a hot patch (P4) installed but not
-   yet activated.
+   yet activated. A line-card programmable forwarding image (example-fpga-image)
+   is running, with a cold patch (2.1.0.P1) administratively activated and pending reload.
+   An independent telemetry software module (telemetry-module) is running, with a newer
+   revision (1.6.0) installed but not yet activated.
 
-Scenario 2: Line-card programmable forwarding image
-   (example-fpga-image) running, with a cold patch (2.1.0.P1)
-   administratively activated and pending reload.
+Scenario 2: Whole-device cold upgrade, where a new base software revision (8.0.0) has been
+ installed and is pending reload.
 
-Scenario 3: A whole-device cold upgrade, where a new base software
-   revision (8.0.0) has been activated and is pending reload.
+Scenario 3: Software-based virtual router running its base software (vrouter-os)
+ with an active hotfix (Hotfix-05), and a newer base revision (24.06) installed but not yet activated.
+
+Scenario 4: Whole-device base software (example-os) running, with an independent hotfix (os-hotfix-P5)
+modelled as a separate top-level software-rev entry.
 
 ~~~~ json
 {::include-fold ./software-example.json}
