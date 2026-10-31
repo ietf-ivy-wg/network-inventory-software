@@ -1,0 +1,1010 @@
+
+
+
+
+Network Inventory YANG                                             B. Wu
+Internet-Draft                                                    Huawei
+Intended status: Standards Track                                 C. Zhou
+Expires: 4 May 2027                                         China Mobile
+                                                                   Q. Wu
+                                                                  Huawei
+                                                            M. Boucadair
+                                                                  Orange
+                                                         31 October 2026
+
+
+            A YANG Data Model of Network Inventory Software
+            draft-ietf-ivy-network-inventory-software-latest
+
+Abstract
+
+   This document extends the base Network Inventory YANG model to
+   support software-based network elements (NEs) and software
+   components.  The extension introduces software lifecycle status that
+   distinguishes running software from software that is installed but
+   not running, together with installation timestamps for non-running
+   software, and both installation and activation timestamps for running
+   software.
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Discussion of this document takes place on the Network Inventory YANG
+   mailing list (inventory-yang@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/inventory-yang/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/ietf-ivy-wg/network-inventory-software.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 4 May 2027.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Editorial Note (To be removed by RFC Editor)
+     1.2.  Terminology and Notations
+   2.  YANG Data Model for Network Inventory Software Overview
+     2.1.  Relationship to Other YANG Data Models
+     2.2.  Network Inventory Software Tree Diagram
+     2.3.  Software-based Network Elements
+     2.4.  Software Components
+   3.  YANG Data Model for Network Inventory Software
+   4.  Operational Considerations
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
+   Appendix A.  Examples of Software Attributes
+   Acknowledgments
+   Contributors
+   Authors' Addresses
+
+1.  Introduction
+
+   The Network Inventory consists of the physical and software-based
+   network elements (NEs), hardware components, firmware components, and
+   software components on a managed network domain.  The software-based
+   network elements (NEs) are network devices that support network
+   protocols and functions, e.g., routers, firewalls, and controllers,
+   which can reside in any network or compute environment.
+
+   [I-D.ietf-ivy-network-inventory-yang] defines the base Network
+   Inventory YANG model for physical network element (NE) and hardware
+   components of NEs.  Examples of hardware components could be rack,
+   shelf, slot, board and physical port.
+
+   The management of software-based NE and software components
+   information is similar to the management of physical NE and hardware
+   information.  For example, inventory data, including product names,
+   serial numbers, etc. are also applicable.  This document defines a
+   network inventory software YANG model.  In addition to inheriting the
+   common inventory attributes of the base network inventory model, this
+   document also adds some software-specific attributes of software-
+   based NEs (such as controllers, virtual routers, and virtual
+   firewalls) and software components (such as operating system,
+   software modules, BIOS, and boot loader).
+
+   The Network Inventory software model is classified as a network model
+   (Section 4 of [RFC8309]).
+
+1.1.  Editorial Note (To be removed by RFC Editor)
+
+   Note to the RFC Editor: This section is to be removed prior to
+   publication.
+
+   This document contains placeholder values that need to be replaced
+   with finalized values at the time of publication.  This note
+   summarizes all of the substitutions that are needed.
+
+   Please apply the following replacements:
+
+   *  XXXX --> the assigned RFC number for this I-D
+
+   *  AAAA --> the assigned RFC number for
+      [I-D.ietf-ivy-network-inventory-yang]
+
+1.2.  Terminology and Notations
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   The following terms are defined in [RFC7950] and are not redefined
+   here:
+
+   *  client
+
+   *  server
+
+   *  augment
+
+   *  data model
+
+   *  data node
+
+   The tree diagram used in this document follows the notation defined
+   in [RFC8340].
+
+   Also, this document uses terms defined in
+   [I-D.ietf-ivy-network-inventory-yang], specifically:
+
+   *  Network Inventory: See Section 2.2 of
+      [I-D.ietf-ivy-network-inventory-yang].
+
+   *  Network Element: See Section 2.2 of
+      [I-D.ietf-ivy-network-inventory-yang].
+
+   *  Component: See Section 2.2 of
+      [I-D.ietf-ivy-network-inventory-yang].
+
+   *  Software Components: See Section 3.3.2 of
+      [I-D.ietf-ivy-network-inventory-yang].
+
+   Some examples in this document contain long lines that may be folded,
+   as described in [RFC8792].
+
+2.  YANG Data Model for Network Inventory Software Overview
+
+2.1.  Relationship to Other YANG Data Models
+
+   The base network inventory model supports the software versions of
+   NEs and software versions of hardware components.  This document adds
+   more software component identifiers (e.g., platform OS), software NE
+   type, and software lifecycle status and time stamp information to
+   provide extended software information on the NE to facilitate
+   software compatibility check.
+
+   Figure 1 depicts the relationship between the network inventory
+   software model and the base network inventory model.  The network
+   inventory software model adds more software specific attributes.
+
+                         +----------------------+
+                         |                      |
+                         |Base Network Inventory|
+                         |                      |
+                         +----------^-----------+
+                                    |
+                                    |
+                                    |
+                                    |
+                         +----------^-----------+
+                         |                      |
+                         |  Software Extensions |
+                         |    e.g., SW module   |
+                         |                      |
+                         +----------------------+
+
+          Figure 1: Relationship of SW Extension Model to the Base
+                              Inventory Model
+
+2.2.  Network Inventory Software Tree Diagram
+
+   The tree diagram in Figure 2 provides an overview of the data model
+   for "ietf-network-inventory-software" module.
+
+   The model applies software extension attributes at two levels:
+
+   *  NE-level "software-rev": Describes the main system software
+      revision of the network element, such as the network operating
+      system release of the whole device.  Only running software is
+      reported here, consistent with the base model.  The augmented
+      nodes include installation-time and activation-time.
+
+   *  Component-level "software-rev": Describes the independent software
+      or firmware revision of an individual component, such as a line
+      card software, a line card firmware, or a pluggable software
+      module.  Only running software is reported here, consistent with
+      the base model.  The augmented nodes include installation-time and
+      activation-time.
+
+   In addition, the model introduces:
+
+   *  "installed-software": Lists at both NE and component levels,
+      reporting software that is present on the entity but not currently
+      running (installed, or activated but pending reload).  installed-
+      software carries name, revision, status, installation-time.
+      Activation-time is not modeled for installed-software entries;
+      activation-time is only available once the software becomes
+      running and appears in software-rev.
+
+      module: ietf-network-inventory-software
+
+        augment /nwi:network-inventory/nwi:network-elements
+                  /nwi:network-element/nwi:software-rev:
+          +--ro installation-time?   yang:date-and-time
+          +--ro activation-time?     yang:date-and-time
+        augment /nwi:network-inventory/nwi:network-elements
+                  /nwi:network-element:
+          +--ro installed-software* [name revision]
+             +--ro name                 string
+             +--ro revision             string
+             +--ro status?              identityref
+             +--ro installation-time?   yang:date-and-time
+        augment /nwi:network-inventory/nwi:network-elements
+                  /nwi:network-element/nwi:components/nwi:component:
+          +--ro installed-software* [name revision]
+             +--ro name                 string
+             +--ro revision             string
+             +--ro status?              identityref
+             +--ro installation-time?   yang:date-and-time
+        augment /nwi:network-inventory/nwi:network-elements
+                  /nwi:network-element/nwi:components/nwi:component
+                  /nwi:software-rev:
+          +--ro installation-time?   yang:date-and-time
+          +--ro activation-time?     yang:date-and-time
+
+             Figure 2: YANG Tree of Network Inventory Software
+
+2.3.  Software-based Network Elements
+
+   In the base Network Inventory YANG model, "ne-type" is a YANG
+   identity that describes the type of the network element and only the
+   "ne-physical" identity" is defined.  This document adds "ne-software-
+   based" identity for software-based NEs.
+
+   The base Network Inventory model also defines common inventory
+   attributes, including the software version, patch versions, product
+   name, and serial number.  The data is also applicable to software-
+   based NEs.
+
+   A software-based NE performs network protocol or forwarding functions
+   but does not correspond to a distinguishable hardware chassis.  It
+   may be hosted on bare-metal server, in a virtual machine, container,
+   or cloud compute instance.
+
+2.4.  Software Components
+
+   Software components refer to the software installed on the NE, such
+   as operating system, software modules, BIOS, and boot loaders.
+
+   Similar to the common inventory attributes of NEs, the common
+   attributes of software components (such as software revisions, patch
+   revisions, product name, and serial number) are also applicable to
+   software components.  For software revisions and patch revisions, the
+   base inventory (Section 4 of [I-D.ietf-ivy-network-inventory-yang])
+   defines the "list" of "software-rev" and the "list" of "patch".  For
+   example, on a router, software components may include a routing
+   protocol package (e.g., "foo-rt-protocol-suite"), or a firmware
+   module for a line card (e.g., "foo-lc-fw-21.5.3").
+
+   The base "software-rev" list reports software that is currently
+   running on the entity.  Software that is present but not running
+   (e.g., installed but not activated, or activated but pending a reload
+   for a cold patch or cold upgrade) is reported in the "installed-
+   software" list defined by this document.  The two lists are mutually
+   exclusive: an entry MUST NOT appear in both lists at the same time.
+
+3.  YANG Data Model for Network Inventory Software
+
+   The "ietf-network-inventory-software" module uses types defined in
+   [RFC9911] and [I-D.ietf-ivy-network-inventory-yang].
+
+   <CODE BEGINS> file "ietf-network-inventory-software@2026-10-31.yang"
+   module ietf-network-inventory-software {
+     yang-version 1.1;
+     namespace
+       "urn:ietf:params:xml:ns:yang:ietf-network-inventory-software";
+     prefix nwis;
+
+     import ietf-yang-types {
+       prefix yang;
+       reference
+         "RFC 9911: Common YANG Data Types, Section 3";
+     }
+     import ietf-network-inventory {
+       prefix nwi;
+       reference
+         "RFC AAAA: A YANG Data Model for Network Inventory";
+     }
+
+     organization
+       "IETF Network Inventory YANG (ivy) Working Group";
+     contact
+       "WG Web:   https://datatracker.ietf.org/wg/ivy
+        WG List:  <mailto:ivy@ietf.org>
+
+        Editor: Bo Wu
+                <lana.wubo@huawei.com>
+        Editor: Cheng Zhou
+                <zhouchengyjy@chinamobile.com>
+        Editor: Qin Wu
+                <bill.wu@huawei.com>
+        Editor: Mohamed Boucadair
+                <mohamed.boucadair@orange.com>";
+     description
+       "This module defines a YANG model for network inventory software.
+
+        Copyright (c) 2026 IETF Trust and the persons
+        identified as authors of the code.  All rights reserved.
+
+        Redistribution and use in source and binary forms, with or
+        without modification, is permitted pursuant to, and subject
+        to the license terms contained in, the Revised BSD License
+        set forth in Section 4.c of the IETF Trust's Legal Provisions
+        Relating to IETF Documents
+        (https://trustee.ietf.org/license-info).
+
+        The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+        NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+        'MAY', and 'OPTIONAL' in this document are to be interpreted as
+        described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+        they appear in all capitals, as shown here.
+
+        All revisions of IETF and IANA published modules can be found
+        at the YANG Parameters registry group
+        (https://www.iana.org/assignments/yang-parameters).
+
+        This version of this YANG module is part of RFC XXXX; see
+        the RFC itself for full legal notices.";
+
+     revision 2026-10-31 {
+       description
+         "Initial version";
+       reference
+         "RFC XXXX: A YANG Data Model for Network Inventory Software";
+     }
+
+     identity ne-software-based {
+       base nwi:ne-type;
+       description
+         "Any network element (NE) implemented purely in software.
+          It performs protocol or forwarding functions but
+          does not correspond to a distinguishable hardware
+          chassis. It can be hosted on a bare-metal server,
+          in a virtual machine (VM), in a container, or on
+          cloud instance.";
+     }
+
+     identity software-component {
+       base nwi:non-hardware-component-class;
+       description
+         "Base identity for software components in a managed NE.";
+     }
+
+     identity operating-system {
+       base software-component;
+       description
+         "Operating system (OS) software type.";
+     }
+
+     identity bios {
+       base software-component;
+       description
+         "System firmware responsible for hardware initialization
+          and system boot.";
+     }
+
+     identity boot-loader {
+       base software-component;
+       description
+         "Software layer responsible for loading and booting the
+          device OS or network OS.";
+     }
+
+     identity software-module {
+       base software-component;
+       description
+         "Installable unit smaller than a full OS image,
+          e.g., feature package.";
+     }
+
+     identity software-status {
+       description
+         "Base identity for the lifecycle status of non-running
+          software.  This identity is used only by the
+          'installed-software' list. Running software is identified
+          by its presence in the base 'software-rev' list and does
+          not carry a 'status' leaf.";
+     }
+
+     identity software-installed {
+       base software-status;
+       description
+         "Software or patch is installed on the network element or
+          component but not yet administratively active.";
+     }
+
+     identity software-activated-pending-reload {
+       base software-status;
+       description
+         "Software or patch is administratively activated but not
+          yet running; a reload is required for it to take effect
+          (e.g., cold patch or cold upgrade).
+          After the reload completes, this installed entry is removed,
+          and the corresponding running version appears in
+          'software-rev'.";
+     }
+
+     grouping installed-software-grouping {
+       description
+         "Attributes of software that is present on the NE but
+          not currently running.";
+       leaf name {
+         type string;
+         description
+           "Name of the software.";
+       }
+       leaf revision {
+         type string;
+         description
+           "Revision of the software.";
+       }
+       leaf status {
+         type identityref {
+           base software-status;
+         }
+         must "derived-from-or-self(., 'software-installed') or "
+            + "derived-from-or-self(., "
+            + "'software-activated-pending-reload')" {
+           error-message
+             "Only 'software-installed' or "
+           + "'software-activated-pending-reload' are allowed "
+           + "for non-running software.";
+         }
+         description
+           "Lifecycle status of this non-running software.";
+       }
+       leaf installation-time {
+         type yang:date-and-time;
+         description
+           "Time when this software or patch was first installed.";
+       }
+     }
+
+     /* Main blocks */
+
+     augment "/nwi:network-inventory/nwi:network-elements"
+           + "/nwi:network-element/nwi:software-rev" {
+       description
+         "Adds installation-time and activation-time to the
+          base NE software revision.
+          The base list reports running software only; presence in
+          this list implies that the software is running.";
+       leaf installation-time {
+         type yang:date-and-time;
+         description
+           "Time when this running software revision was first
+            installed.";
+       }
+       leaf activation-time {
+         type yang:date-and-time;
+         description
+           "Time when this running software revision first entered
+            the activated state.";
+       }
+     }
+
+     augment "/nwi:network-inventory/nwi:network-elements"
+           + "/nwi:network-element" {
+       description
+         "Adds the installed-software list at the NE level.";
+       list installed-software {
+         key "name revision";
+         description
+           "Software that is present on the NE but not currently
+            running.  This includes software that is installed but
+            not administratively activated, and software that
+            has been administratively activated but requires
+            a reload to take effect (e.g., cold patch or
+            cold upgrade).  Entries in this list MUST NOT
+            appear in the base 'software-rev' list.  When an entry
+            becomes running, the corresponding version appears in
+            'software-rev', and this installed-software entry
+            is removed.";
+         uses installed-software-grouping;
+       }
+     }
+
+     augment "/nwi:network-inventory/nwi:network-elements/"
+           + "nwi:network-element/nwi:components/nwi:component" {
+       description
+         "Adds the installed-software list at the component level.";
+       list installed-software {
+         key "name revision";
+         description
+           "Software that is present on the component but not
+            currently running.";
+         uses installed-software-grouping;
+       }
+     }
+
+     augment "/nwi:network-inventory/nwi:network-elements/"
+           + "nwi:network-element/nwi:components/nwi:component/"
+           + "nwi:software-rev" {
+       description
+         "Adds installation-time and activation-time to
+          component-level running software revisions.  The base
+          list reports running software only; presence in this list
+          implies that the software is running.";
+       leaf installation-time {
+         type yang:date-and-time;
+         description
+           "Time when this running software revision was first
+            installed.";
+       }
+       leaf activation-time {
+         type yang:date-and-time;
+         description
+           "Time when this running software revision first entered
+            the activated state.";
+       }
+     }
+   }
+   <CODE ENDS>
+
+4.  Operational Considerations
+
+   This section complements the operational considerations of the base
+   network inventory model [I-D.ietf-ivy-network-inventory-yang].  The
+   considerations of [I-D.ietf-ivy-network-inventory-yang] also apply to
+   this extension: the read-only perspective of inventory data, data
+   discovery by the server from underlying elements, aggregation at
+   hierarchical controller interfaces, and brownfield migration
+   scenarios.
+
+   This model provides read-only reporting of software status and
+   associated timestamps.  It reflects the state of software revisions
+   and patches as discovered by the server; it does not track software
+   configuration intent or repository state.
+
+   The model is not intended to expose every internal software component
+   present on the network element.  It only covers operator-relevant,
+   separately versionable and independently upgradable software
+   artifacts, such as base OS images, line-card FPGA firmware, separable
+   feature modules, and hotfix patches.  Embedded static libraries and
+   fine-grained internal sub-components that cannot be independently
+   managed or upgraded are out of scope.
+
+   The base 'software-rev' list reports running software only.  Presence
+   of an entry in 'software-rev' implies that the software is running.
+   The 'installed-software' list reports software that is present but
+   not running, including software that is installed but not activated,
+   and software that has been activated but is pending a reload (cold
+   patch or cold upgrade).
+
+   Full software lifecycle management (install, activate, rollback,
+   remove operations, etc.) is out of scope of this document and could
+   be defined in separate YANG modules.
+
+5.  Security Considerations
+
+   This section is modeled after the template described in Section 3.7
+   of [RFC9907].
+
+   The "ietf-network-inventory-software" YANG module augments the base
+   network inventory model defined in
+   [I-D.ietf-ivy-network-inventory-yang].  All security considerations
+   specified in the base model apply to this extension module.  This
+   section complements the base model with additional security
+   considerations specific to inventory software extensions.
+
+   The "ietf-network-inventory-software" YANG module defines a data
+   model that is designed to be accessed via YANG-based management
+   protocols, such as Network Configuration Protocol (NETCONF) [RFC6241]
+   and RESTCONF [RFC8040].  These YANG-based management protocols (1)
+   have to use a secure transport layer (e.g., Secure Shell (SSH)
+   [RFC4252], TLS [RFC9846], and QUIC [RFC9000]) and (2) have to use
+   mutual authentication.
+
+   The Network Configuration Access Control Model (NACM) [RFC8341]
+   provides the means to restrict access for particular NETCONF or
+   RESTCONF users to a preconfigured subset of all available NETCONF or
+   RESTCONF protocol operations and content.
+
+   Some of the readable data nodes in this YANG module may be considered
+   sensitive or vulnerable in some network environments.  It is thus
+   important to control read access (e.g., via get, get-config, or
+   notification) to these data nodes.  Specifically, the following
+   subtrees and data nodes have particular sensitivities/
+   vulnerabilities:
+
+   *  "/nwi:network-elements/nwi:network-element/nwi:software-rev"
+
+   *  "/nwi:network-elements/nwi:network-element/nwi:software-rev/
+      nwi:patch"
+
+   *  "/nwi:network-elements/nwi:network-element/nwis:installed-
+      software"
+
+   *  "/nwi:network-elements/nwi:network-
+      element/nwi:components/nwi:component/nwi:software-rev"
+
+   *  "/nwi:network-elements/nwi:network-
+      element/nwi:components/nwi:component/nwi:software-rev/nwi:patch"
+
+   *  "/nwi:network-elements/nwi:network-
+      element/nwi:components/nwi:component/nwis:installed-software"
+
+   These extensions add installation and activation timestamps for
+   running software, plus a separate installed-software list for both
+   NE-level and component-level.  Disclosure of detailed software
+   versions, patch levels, and lifecycle timestamps can reveal unpatched
+   vulnerabilities and operational maintenance windows, enabling
+   targeted attacks.
+
+6.  IANA Considerations
+
+   IANA is requested to register the following URI in the "ns"
+   subregistry within the "IETF XML Registry" [RFC3688]:
+
+   URI:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-software
+   Registrant Contact:  The IESG.
+   XML:  N/A; the requested URI is an XML namespace.
+
+   IANA is requested to register the following YANG module in the "YANG
+   Module Names" registry [RFC6020] within the "YANG Parameters"
+   registry group:
+
+ Name:  ietf-network-inventory-software
+ Namespace:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-software
+ Prefix:  nwis
+ Maintained by IANA?  N
+ Reference:  RFC XXXX
+
+7.  References
+
+7.1.  Normative References
+
+   [I-D.ietf-ivy-network-inventory-yang]
+              Yu, C., Belotti, S., Bouquier, J., Peruzzini, F., and P.
+              Bedard, "A Base YANG Data Model for Network Inventory",
+              Work in Progress, Internet-Draft, draft-ietf-ivy-network-
+              inventory-yang-20, 29 September 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-ivy-
+              network-inventory-yang-20>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
+              DOI 10.17487/RFC3688, January 2004,
+              <https://www.rfc-editor.org/rfc/rfc3688>.
+
+   [RFC6020]  Bjorklund, M., Ed., "YANG - A Data Modeling Language for
+              the Network Configuration Protocol (NETCONF)", RFC 6020,
+              DOI 10.17487/RFC6020, October 2010,
+              <https://www.rfc-editor.org/rfc/rfc6020>.
+
+   [RFC7950]  Bjorklund, M., Ed., "The YANG 1.1 Data Modeling Language",
+              RFC 7950, DOI 10.17487/RFC7950, August 2016,
+              <https://www.rfc-editor.org/rfc/rfc7950>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8341]  Bierman, A. and M. Bjorklund, "Network Configuration
+              Access Control Model", STD 91, RFC 8341,
+              DOI 10.17487/RFC8341, March 2018,
+              <https://www.rfc-editor.org/rfc/rfc8341>.
+
+   [RFC9911]  Schönwälder, J., Ed., "Common YANG Data Types", RFC 9911,
+              DOI 10.17487/RFC9911, December 2025,
+              <https://www.rfc-editor.org/rfc/rfc9911>.
+
+7.2.  Informative References
+
+   [RFC4252]  Ylonen, T. and C. Lonvick, Ed., "The Secure Shell (SSH)
+              Authentication Protocol", RFC 4252, DOI 10.17487/RFC4252,
+              January 2006, <https://www.rfc-editor.org/rfc/rfc4252>.
+
+   [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
+              and A. Bierman, Ed., "Network Configuration Protocol
+              (NETCONF)", RFC 6241, DOI 10.17487/RFC6241, June 2011,
+              <https://www.rfc-editor.org/rfc/rfc6241>.
+
+   [RFC8040]  Bierman, A., Bjorklund, M., and K. Watsen, "RESTCONF
+              Protocol", RFC 8040, DOI 10.17487/RFC8040, January 2017,
+              <https://www.rfc-editor.org/rfc/rfc8040>.
+
+   [RFC8309]  Wu, Q., Liu, W., and A. Farrel, "Service Models
+              Explained", RFC 8309, DOI 10.17487/RFC8309, January 2018,
+              <https://www.rfc-editor.org/rfc/rfc8309>.
+
+   [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
+              BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
+              <https://www.rfc-editor.org/rfc/rfc8340>.
+
+   [RFC8792]  Watsen, K., Auerswald, E., Farrel, A., and Q. Wu,
+              "Handling Long Lines in Content of Internet-Drafts and
+              RFCs", RFC 8792, DOI 10.17487/RFC8792, June 2020,
+              <https://www.rfc-editor.org/rfc/rfc8792>.
+
+   [RFC9000]  Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
+              Multiplexed and Secure Transport", RFC 9000,
+              DOI 10.17487/RFC9000, May 2021,
+              <https://www.rfc-editor.org/rfc/rfc9000>.
+
+   [RFC9846]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 9846, DOI 10.17487/RFC9846, July 2026,
+              <https://www.rfc-editor.org/rfc/rfc9846>.
+
+   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
+              for Authors and Reviewers of Documents Containing YANG
+              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
+              March 2026, <https://www.rfc-editor.org/rfc/rfc9907>.
+
+Appendix A.  Examples of Software Attributes
+
+   This appendix illustrates, by means of four typical scenarios, how to
+   populate the software-specific nodes defined in "ietf-network-
+   inventory-software".
+
+   Scenario 1: Whole-device base software (example-os) running, with a
+   hot patch (P3) already running and a hot patch (P4) installed but not
+   yet activated.  A line-card programmable forwarding image (example-
+   fpga-image) is running, with a cold patch (2.1.0.P1) administratively
+   activated and pending reload.  An independent telemetry software
+   module (telemetry-module) is running, with a newer revision (1.6.0)
+   installed but not yet activated.
+
+   Scenario 2: Whole-device cold upgrade, where a new base software
+   revision (8.0.0) has been installed and is pending reload.
+
+   Scenario 3: Software-based virtual router running its base software
+   (vrouter-os) with an active hotfix (Hotfix-05), and a newer base
+   revision (24.06) installed but not yet activated.
+
+   Scenario 4: Whole-device base software (example-os) running, with an
+   independent hotfix (os-hotfix-P5) modelled as a separate top-level
+   software-rev entry.
+
+   =============== NOTE: '\' line wrapping per RFC 8792 ================
+
+   {
+     "ietf-network-inventory:network-inventory": {
+       "network-elements": {
+         "network-element": [
+           {
+             "ne-id": "example:NE-01",
+             "ne-type": "ietf-network-inventory:ne-physical",
+             "name": "router-base-os-demo",
+             "description": "Physical router with base OS, line-card \
+               FPGA firmware and independent telemetry software module",
+             "software-rev": [
+               {
+                 "name": "example-os",
+                 "revision": "7.9.2",
+                 "patch": [
+                   {
+                     "revision": "P3"
+                   }
+                 ],
+                 "ietf-network-inventory-software:installation-time": "\
+                                                  2024-08-01T12:00:00Z",
+                 "ietf-network-inventory-software:activation-time": "\
+                                                   2024-08-01T12:05:00Z"
+               }
+             ],
+             "components": {
+               "component": [
+                 {
+                   "component-id": "example:lpu/1/0",
+                   "class": "iana-hardware:module",
+                   "description": "Line processing unit with FPGA \
+                                                              firmware",
+                   "software-rev": [
+                     {
+                       "name": "example-fpga-image",
+                       "revision": "2.1.0",
+                       "patch": [],
+                       "ietf-network-inventory-software:installation-\
+                                          time": "2024-08-01T12:00:00Z",
+                       "ietf-network-inventory-software:activation-time\
+                                               ": "2024-08-01T12:06:00Z"
+                     }
+                   ],
+                   "ietf-network-inventory-software:installed-software"\
+                                                                     : [
+                     {
+                       "name": "example-fpga-image-2.1.0.P1",
+                       "revision": "2.1.0.P1",
+                       "status": "ietf-network-inventory-software:\
+                                     software-activated-pending-reload",
+                       "installation-time": "2024-10-01T14:10:00Z"
+                     }
+                   ]
+                 },
+                 {
+                   "component-id": "example:feature-telemetry",
+                   "class": "ietf-network-inventory-software:software-\
+                                                                module",
+                   "description": "Telemetry feature software module",
+                   "software-rev": [
+                     {
+                       "name": "telemetry-module",
+                       "revision": "1.5.1",
+                       "patch": [],
+                       "ietf-network-inventory-software:installation-\
+                                          time": "2024-08-02T09:00:00Z",
+                       "ietf-network-inventory-software:activation-time\
+                                               ": "2024-08-02T09:05:00Z"
+                     }
+                   ],
+                   "ietf-network-inventory-software:installed-software"\
+                                                                     : [
+                     {
+                       "name": "telemetry-module",
+                       "revision": "1.6.0",
+                       "status": "ietf-network-inventory-software:\
+                                                    software-installed",
+                       "installation-time": "2024-11-02T11:30:00Z"
+                     }
+                   ]
+                 }
+               ]
+             },
+             "ietf-network-inventory-software:installed-software": [
+               {
+                 "name": "example-os-P4",
+                 "revision": "P4",
+                 "status": "ietf-network-inventory-software:software-\
+                                                             installed",
+                 "installation-time": "2024-10-01T14:00:00Z"
+               }
+             ]
+           },
+           {
+             "ne-id": "example:NE-02",
+             "ne-type": "ietf-network-inventory:ne-physical",
+             "name": "router-os-upgrade-pending-reload",
+             "description": "Physical router with new OS version \
+                              installed, pending reload for activation",
+             "software-rev": [
+               {
+                 "name": "example-os",
+                 "revision": "7.9.2",
+                 "patch": [],
+                 "ietf-network-inventory-software:installation-time": "\
+                                                  2024-08-01T12:00:00Z",
+                 "ietf-network-inventory-software:activation-time": "\
+                                                   2024-08-01T12:05:00Z"
+               }
+             ],
+             "components": {},
+             "ietf-network-inventory-software:installed-software": [
+               {
+                 "name": "example-os",
+                 "revision": "8.0.0",
+                 "status": "ietf-network-inventory-software:software-\
+                                              activated-pending-reload",
+                 "installation-time": "2024-11-01T09:00:00Z"
+               }
+             ]
+           },
+           {
+             "ne-id": "example:NE-03",
+             "ne-type": "ietf-network-inventory-software:ne-software-\
+                                                                 based",
+             "name": "vrouter-01",
+             "description": "Virtual router deployed as VM (VNF) to \
+                                         demonstrate software-based NE",
+             "software-rev": [
+               {
+                 "name": "vrouter-os",
+                 "revision": "24.03",
+                 "patch": [
+                   {
+                     "revision": "Hotfix-05"
+                   }
+                 ],
+                 "ietf-network-inventory-software:installation-time": "\
+                                                  2024-09-10T08:00:00Z",
+                 "ietf-network-inventory-software:activation-time": "\
+                                                   2024-09-10T08:15:00Z"
+               }
+             ],
+             "components": {},
+             "ietf-network-inventory-software:installed-software": [
+               {
+                 "name": "vrouter-os",
+                 "revision": "24.06",
+                 "status": "ietf-network-inventory-software:software-\
+                                                             installed",
+                 "installation-time": "2024-11-05T10:20:00Z"
+               }
+             ]
+           },
+           {
+             "ne-id": "example:NE-04",
+             "ne-type": "ietf-network-inventory:ne-physical",
+             "name": "router-hotfix-demo",
+             "description": "Physical router demonstrating \
+                                    independently applied hotfix patch",
+             "software-rev": [
+               {
+                 "name": "example-os",
+                 "revision": "7.9.2",
+                 "patch": [],
+                 "ietf-network-inventory-software:installation-time": "\
+                                                  2024-08-01T12:00:00Z",
+                 "ietf-network-inventory-software:activation-time": "\
+                                                   2024-08-01T12:05:00Z"
+               },
+               {
+                 "name": "os-hotfix-P5",
+                 "revision": "P5",
+                 "patch": [],
+                 "ietf-network-inventory-software:installation-time": "\
+                                                  2024-11-10T15:00:00Z",
+                 "ietf-network-inventory-software:activation-time": "\
+                                                   2024-11-10T15:10:00Z"
+               }
+             ],
+             "components": {},
+             "ietf-network-inventory-software:installed-software": []
+           }
+         ]
+       }
+     }
+   }
+
+Acknowledgments
+
+   The authors would like to thank Chongfeng Xie, Prasenjit Manna, Phil
+   Bedard, Diego R.Lopez, Italo Busi, Adrian Farrel, and many others for
+   their helpful comments and suggestions.  The authors also thank
+   Reshad Rahman for the YANG doctor review.
+
+Contributors
+
+   Yao Zhao
+   Huawei
+   Email: zhaoyao.zhaoyao@huawei.com
+
+
+Authors' Addresses
+
+   Bo Wu
+   Huawei
+   Email: lana.wubo@huawei.com
+
+
+   Cheng Zhou
+   China Mobile
+   Email: zhouchengyjy@chinamobile.com
+
+
+   Qin Wu
+   Huawei
+   Email: bill.wu@huawei.com
+
+
+   Mohamed Boucadair
+   Orange
+   Email: mohamed.boucadair@orange.com
