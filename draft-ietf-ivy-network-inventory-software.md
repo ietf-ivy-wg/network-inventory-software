@@ -1,5 +1,5 @@
 ---
-title: "A YANG Network Data Model of Network Inventory Software Extensions"
+title: "A YANG Network Data Model of Network Inventory Software"
 abbrev: "Network Inventory Software"
 category: std
 
@@ -44,42 +44,40 @@ informative:
 --- abstract
 
 This document extends the base Network Inventory YANG model to support
- non-physical network elements (NEs), such as controllers, virtual
- routers, and virtual firewalls, as well as software components
- like platform operating systems and software modules. In addition to
- the software revisions and patches already defined in the base model,
- this extension introduces software status and time stamp information.
+software-based network elements (NEs) and software components. The
+extension introduces software lifecycle status that distinguishes running
+software from software that is installed but not running, together
+with installation timestamps for non-running software, and both
+installation and activation timestamps for running software.
 
 --- middle
 
 # Introduction
 
-The Network Inventory consists of the physical and non-physical
+The Network Inventory consists of the physical and software-based
       network elements (NEs), hardware components, firmware components, and
-      software components on a managed network domain. The non-physical
+      software components on a managed network domain. The software-based
       network elements (NEs) are network devices that support network
       protocols and functions, e.g., routers, firewalls, and controllers,
-      which can reside in any network or compute devices, such as servers in
-      Data Center (DC), server-based virtual machines (VMs), or server-based
-      containers.
+      which can reside in any network or compute environment.
 
  {{!I-D.ietf-ivy-network-inventory-yang}}  defines the base
       Network Inventory YANG model for physical network element (NE) and
       hardware components of NEs. Examples of hardware components could be
       rack, shelf, slot, board and physical port.
 
-The management of non-physical NE and software components information
+The management of software-based NE and software components information
       is similar to the management of physical NE and hardware information.
       For example, inventory data, including product names, serial numbers,
       etc. are also applicable. This document defines a network inventory
-      software extension YANG model. In addition to inheriting the common
+      software YANG model. In addition to inheriting the common
       inventory attributes of the base network inventory model, this document
-      also adds some software-specific attributes of non-physical NEs (such as
+      also adds some software-specific attributes of software-based NEs (such as
       controllers, virtual routers, and virtual firewalls) and software
       components (such as operating system, software modules, BIOS, and boot
       loader).
 
-The Network Inventory software extension model is classified as a
+The Network Inventory software model is classified as a
       network model (Section 4 of  {{?RFC8309}}).
 
 The YANG data model in this document conforms to the Network
@@ -98,6 +96,8 @@ Please apply the following replacements:
 
 ## Terminology and Notations
 
+{::boilerplate bcp14}
+
 The following terms are defined in {{!RFC7950}} and are not
 redefined here:
 
@@ -106,28 +106,30 @@ redefined here:
 *  augment
 *  data model
 *  data node
-  The following terms are defined in {{!RFC6241}} and are not redefined
-   here:
-*  configuration data
-*  state data
-   The tree diagram used in this document follows the notation defined
+
+The tree diagram used in this document follows the notation defined
    in {{?RFC8340}}.
 
- Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang}}.
+Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang}}.
 
-# Relationship to Other YANG Data Models
+*  Network Inventory: See Section 2.2 of [I-D.ietf-ivy-network-inventory-yang].
+*  Network Element: See Section 2.2 of [I-D.ietf-ivy-network-inventory-yang].
+*  Component: See Section 2.2 of [I-D.ietf-ivy-network-inventory-yang].
+*  Software Components: See Section 3.3.2 of [I-D.ietf-ivy-network-inventory-yang].
+
+# YANG Data Model for Network Inventory Software Overview
+
+## Relationship to Other YANG Data Models
 
 The base network inventory model supports the software versions of
-      NEs and software versions of hardware components. This document adds
-      more software component identifiers (e.g., platformos, software patch)
-      and more NE types (e.g., software NE, virtual NE) to provide enhanced
-      software information on the NE to facilitate software compatibility
-      check.
+NEs and software versions of hardware components. This document adds
+more software component identifiers (e.g., platform OS), software NE type,
+and software lifecycle status and time stamp information to provide extended
+software information on the NE to facilitate software compatibility check.
 
 {{fig-ni-sw-mod-relation}} depicts the relationship between
-      the Software Extension model and the base network inventory model. The Software Extension
-      network inventory model enhances the model defined in the base network
-      inventory model with more software specific attributes.
+the network inventory software model and the base network inventory model.
+The network inventory software model adds more software specific attributes.
 
 ~~~~ ascii-art
 +----------------------+
@@ -148,76 +150,89 @@ The base network inventory model supports the software versions of
 ~~~~
 {: #fig-ni-sw-mod-relation title="Relationship of SW Extension Model to the Base Inventory Model" artwork-align="center"}
 
+## Network Inventory Software Tree Diagram
 
-
-# Model Overview
-
-The tree diagram in {{full-tree}} provides an overview of the data model for "ietf-network-inventory-sw-ext"
+The tree diagram in {{full-tree}} provides an overview of the data model for "ietf-network-inventory-software"
       module.
 
 The model applies software extension attributes at two levels:
 
 - NE-level "software-rev": Describes the main system software
   revision of the network element, such as the network
-  operating system release of the whole device.
+  operating system release of the whole device. Only running
+  software is reported here, consistent with the base model.
+  The augmented nodes	include installation-time and activation-time.
 
 - Component-level "software-rev": Describes the independent software
   or firmware revision of an individual component, such as a line
   card software, a line card firmware, or a pluggable software module.
+  Only running software is reported here, consistent with the base model.
+  The augmented nodes	include installation-time and activation-time.
+
+In addition, the model introduces:
+
+- "installed-software": Lists at both NE and component levels,
+   reporting software that is present on the entity but not currently
+   running (installed, or activated but pending reload).
+   installed-software carries name, revision, status, installation-time.
+   Activation-time is not modeled for installed-software entries;
+   activation-time is only available once the software becomes running
+   and appears in software-rev.
 
 ~~~~~~~~~~
-{::include-fold ./ietf-network-inventory-sw-ext.tree}
+{::include-fold ./ietf-network-inventory-software.tree}
 ~~~~~~~~~~
-{: #full-tree title="YANG Tree of Software Extensions" artwork-align="center"}
+{: #full-tree title="YANG Tree of Network Inventory Software" artwork-align="center"}
 
-# Non-physical Network Elements
+## Software-based Network Elements
 
 In the base Network Inventory YANG model, "ne-type" is a YANG
-      identity that describes the type of the network element and only the
-      "physical-network-element" identity" is defined. This document adds
-      non-physical NE identity, such as "ne-software", "ne-virtual", and
-      "ne-container".
+identity that describes the type of the network element and only the
+"ne-physical" identity" is defined. This document adds
+"ne-software-based" identity for software-based NEs.
 
 The base Network Inventory model also defines common inventory
-      attributes, including the software version, patch versions, product
-      name, and serial number. The data is also applicable to non-physical
-      NEs.
+attributes, including the software version, patch versions, product
+name, and serial number. The data is also applicable to software-based
+NEs.
 
-The Network Inventory software extension mode defines some new
-      software attributes, consisting of software status, installation time,
-      and activation time.
+A software-based NE performs network protocol or forwarding functions
+but does not correspond to a distinguishable hardware chassis.
+It may be hosted on bare-metal server, in a virtual machine,
+container, or cloud compute instance.
 
-# Software Components
+## Software Components
 
 Software components refer to the software installed on the NE, such
-      as operating system, software modules, BIOS, and boot loaders.
+as operating system, software modules, BIOS, and boot loaders.
 
 Similar to the common inventory attributes of NEs, the common
-      attributes of software components (such as software revisions, patch
-      revisions, product name, and serial number) are also applicable to
-      software components. For software revisions and patch revisions, the base inventory
-      (Section 4 of {{!I-D.ietf-ivy-network-inventory-yang}})
-      defines the "list" of "software-rev" and the "list" of
-      "patch". For example, on a router, software components may
-      include a routing protocol package
-      (e.g., " foo-rt-protocol-suite"), or a firmware module for a
-      line card (e.g., " foo-lc-fw-21.5.3").
+attributes of software components (such as software revisions,
+patch revisions, product name, and serial number) are also applicable to
+software components. For software revisions and patch revisions, the base inventory
+(Section 4 of {{!I-D.ietf-ivy-network-inventory-yang}})
+defines the "list" of "software-rev" and the "list" of
+"patch". For example, on a router, software components may
+include a routing protocol package (e.g., "foo-rt-protocol-suite"),
+or a firmware module for a line card (e.g., "foo-lc-fw-21.5.3").
 
-If more detailed installation and activation
-      information is needed, such as whether a component is active, pending-reboot,
- or rollback-eligible, along with its install time or activation
- time stamp, the extension attributes of software components
-      can be used.
+The base "software-rev" list reports software that is currently
+   running on the entity.  Software that is present but not running
+   (e.g., installed but not activated, or activated but pending a reload
+   for a cold patch or cold upgrade) is reported in the
+   "installed-software" list defined by this document.  The two lists
+   are mutually exclusive: an entry MUST NOT appear in both lists at the
+   same time.
 
-# YANG Data model for Network Inventory Software Extensions
+# YANG Data model for Network Inventory Software
 
-The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC9911}},
+The "ietf-network-inventory-software" module uses types defined in {{!RFC9911}},
    {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~ yang
-{::include-fold ./ietf-network-inventory-sw-ext.yang}
+{::include-fold ./ietf-network-inventory-software.yang}
 ~~~~
-{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-sw-ext@2026-07-06.yang"}
+{: sourcecode-markers="true" sourcecode-name="ietf-network-inventory-software@2026-10-31.yang"}
 
 # Operational Considerations
 
@@ -234,29 +249,37 @@ The "ietf-network-inventory-sw-ext" module uses types defined in {{!RFC9911}},
    revisions and patches as discovered by the server; it does not
    track software configuration intent or repository state.
 
-   The software inventory data is discovered by the server from
-   underlying managed entities using implementation-specific
-   mechanisms.  The installation-time and activation-time
-   timestamps, as well as the software status (installed or
-   activated), are reported as discovered from the managed entity.
+   The model is not intended to expose every internal software component
+   present on the network element. It only covers operator-relevant, separately
+   versionable and independently upgradable software artifacts, such as base OS images,
+   line-card FPGA firmware, separable feature modules, and hotfix patches. Embedded static
+   libraries and fine-grained internal sub-components that cannot be independently managed
+   or upgraded are out of scope.
 
-   Software lifecycle management operations (install,
-   activate, remove, etc.) are out of scope and could be defined
-   in separate YANG modules.
+   The base 'software-rev' list reports running software only.  Presence
+   of an entry in 'software-rev' implies that the software is running.
+   The 'installed-software' list reports software that is present but
+   not running, including software that is installed but not activated,
+   and software that has been activated but is pending a reload (cold patch
+   or cold upgrade).
+
+   Full software lifecycle management (install, activate, rollback,
+   remove operations, etc.) is out of scope of this document and could be
+   defined in separate YANG modules.
 
 # Security Considerations
 
 This section is modeled after the template described in {{Section 3.7
 of ?RFC9907}}.
 
-The "ietf-network-inventory-sw-ext" YANG module augments the base
+The "ietf-network-inventory-software" YANG module augments the base
    network inventory model defined in {{!I-D.ietf-ivy-network-inventory-yang}}.
    All security considerations specified in the base model apply to this
    extension module. This section complements the base model with
-   additional security considerations specific to software inventory
+   additional security considerations specific to inventory software
    extensions.
 
-The "ietf-network-inventory-sw-ext" YANG module defines a data model that is
+The "ietf-network-inventory-software" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
 NETCONF {{?RFC6241}} and RESTCONF {{?RFC8040}}. These YANG-based management
 protocols (1) have to use a secure transport layer (e.g., SSH {{?RFC4252}}, TLS {{?RFC8446}},
@@ -274,15 +297,19 @@ notification) to these data nodes.
 
 Specifically, the following subtrees and data nodes have particular sensitivities/vulnerabilities:
 
-- "/nwi:network-elements/network-element/software-rev"
-- "/nwi:network-elements/network-element/software-rev/patch"
-- "/nwi:network-elements/network-element/components/component/software-rev"
-- "/nwi:network-elements/network-element/component/component/software-rev/patch"
-> These extension add status, installation time, and activation time
-  to both NE-level and component-level software revisions and patches.
-  Disclosure of detailed software versions, patch levels, and
-  lifecycle timestamps can reveal unpatched vulnerabilities and
-  operational maintenance windows, enabling targeted attacks.
+- "/nwi:network-elements/nwi:network-element/nwi:software-rev"
+- "/nwi:network-elements/nwi:network-element/nwi:software-rev/nwi:patch"
+- "/nwi:network-elements/nwi:network-element/nwis:installed-software"
+- "/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwi:software-rev"
+- "/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwi:software-rev/nwi:patch"
+- "/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwis:installed-software"
+
+These extensions add installation and activation timestamps for
+running software, plus a separate installed-software list for both
+NE-level and component-level. Disclosure of detailed
+software versions, patch levels, and lifecycle timestamps can reveal
+unpatched vulnerabilities and operational maintenance windows,
+enabling targeted attacks.
 
 # IANA Considerations
 
@@ -290,7 +317,7 @@ IANA is requested to register the following URI in the "ns" subregistry within
 the "IETF XML Registry" {{!RFC3688}}:
 
 ~~~~
-URI:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-sw-ext
+URI:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-software
 Registrant Contact:  The IESG.
 XML:  N/A; the requested URI is an XML namespace.
 ~~~~
@@ -299,8 +326,8 @@ IANA is requested to register the following YANG module in the "YANG Module
 Names" registry {{!RFC6020}} within the "YANG Parameters" registry group:
 
 ~~~~
-Name:  ietf-network-inventory-sw-ext
-Namespace:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-sw-ext
+Name:  ietf-network-inventory-software
+Namespace:  urn:ietf:params:xml:ns:yang:ietf-network-inventory-software
 Prefix:  nwis
 Maintained by IANA?  N
 Reference:  RFC XXXX
@@ -310,16 +337,25 @@ Reference:  RFC XXXX
 
 # Examples of Software Attributes
 
-This appendix illustrates, by means of two typical scenarios, how to
+This appendix illustrates, by means of four typical scenarios, how to
  populate the software-specific nodes defined in
- ietf-network-inventory-sw-ext and explains the common values that can be used.
+ "ietf-network-inventory-software".
 
-Scenario 1: Whole-device base software (example-os) plus hot patches
- (P3 already activated, P4 installed but not yet activated).
+Scenario 1: Whole-device base software (example-os) running, with a
+   hot patch (P3) already running and a hot patch (P4) installed but not
+   yet activated. A line-card programmable forwarding image (example-fpga-image)
+   is running, with a cold patch (2.1.0.P1) administratively activated and pending reload.
+   An independent telemetry software module (telemetry-module) is running, with a newer
+   revision (1.6.0) installed but not yet activated.
 
-Scenario 2: Line-card programmable forwarding image
- (example-fpga-image) plus its patch
- (2.1.0.P1 installed and awaiting activation).
+Scenario 2: Whole-device cold upgrade, where a new base software revision (8.0.0) has been
+ installed and is pending reload.
+
+Scenario 3: Software-based virtual router running its base software (vrouter-os)
+ with an active hotfix (Hotfix-05), and a newer base revision (24.06) installed but not yet activated.
+
+Scenario 4: Whole-device base software (example-os) running, with an independent hotfix (os-hotfix-P5)
+modelled as a separate top-level software-rev entry.
 
 ~~~~ json
 {::include-fold ./software-example.json}
@@ -328,7 +364,7 @@ Scenario 2: Line-card programmable forwarding image
 # Acknowledgments
 {:numbered="false"}
 
-The authors would like to thank Prasenjit Manna, Phil Bedard, Diego R.
-      Lopez, Italo Busi, Adrian Farrel, and many others for their helpful comments and
-      suggestions.
+The authors would like to thank Chongfeng Xie, Prasenjit Manna, Phil Bedard, Diego R.Lopez,
+Italo Busi, Adrian Farrel, and many others for their helpful comments and
+suggestions. The authors also thank Reshad Rahman for the YANG doctor review.
 
