@@ -70,14 +70,14 @@ The management of software-based NE and software components information
       is similar to the management of physical NE and hardware information.
       For example, inventory data, including product names, serial numbers,
       etc. are also applicable. This document defines a network inventory
-      software extension YANG model. In addition to inheriting the common
+      software YANG model. In addition to inheriting the common
       inventory attributes of the base network inventory model, this document
       also adds some software-specific attributes of software-based NEs (such as
       controllers, virtual routers, and virtual firewalls) and software
       components (such as operating system, software modules, BIOS, and boot
       loader).
 
-The Network Inventory software extension model is classified as a
+The Network Inventory software model is classified as a
       network model (Section 4 of  {{?RFC8309}}).
 
 The YANG data model in this document conforms to the Network
@@ -169,7 +169,7 @@ The model applies software extension attributes at two levels:
 
 In addition, the model introduces:
 
-- "installed-software" lists at both NE and component levels,
+- "installed-software": Lists at both NE and component levels,
    reporting software that is present on the entity but not currently
    running (installed, or activated but pending reload).
    installed-software carries name, revision, status, installation-time.
@@ -267,7 +267,7 @@ The "ietf-network-inventory-software" YANG module augments the base
    network inventory model defined in {{!I-D.ietf-ivy-network-inventory-yang}}.
    All security considerations specified in the base model apply to this
    extension module. This section complements the base model with
-   additional security considerations specific to software inventory
+   additional security considerations specific to inventory software
    extensions.
 
 The "ietf-network-inventory-software" YANG module defines a data model that is
