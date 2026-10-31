@@ -5,25 +5,19 @@
         {
           "ne-id": "example:NE-01",
           "ne-type": "ietf-network-inventory:ne-physical",
+          "name": "router-base-os-demo",
+          "description": "Physical router with base OS, line-card FPGA firmware and independent telemetry software module",
           "software-rev": [
             {
               "name": "example-os",
               "revision": "7.9.2",
-              "ietf-network-inventory-software:installation-time": "2024-08-01T12:00:00Z",
-              "ietf-network-inventory-software:activation-time": "2024-08-01T12:05:00Z",
               "patch": [
                 {
                   "revision": "P3"
                 }
-              ]
-            }
-          ],
-          "ietf-network-inventory-software:installed-software": [
-            {
-              "name": "example-os-P4",
-              "revision": "P4",
-              "status": "ietf-network-inventory-software:software-installed",
-              "installation-time": "2024-10-01T14:00:00Z"
+              ],
+              "ietf-network-inventory-software:installation-time": "2024-08-01T12:00:00Z",
+              "ietf-network-inventory-software:activation-time": "2024-08-01T12:05:00Z"
             }
           ],
           "components": {
@@ -31,13 +25,14 @@
               {
                 "component-id": "example:lpu/1/0",
                 "class": "iana-hardware:module",
+                "description": "Line processing unit with FPGA firmware",
                 "software-rev": [
                   {
                     "name": "example-fpga-image",
                     "revision": "2.1.0",
+                    "patch": [],
                     "ietf-network-inventory-software:installation-time": "2024-08-01T12:00:00Z",
-                    "ietf-network-inventory-software:activation-time": "2024-08-01T12:06:00Z",
-                    "patch": []
+                    "ietf-network-inventory-software:activation-time": "2024-08-01T12:06:00Z"
                   }
                 ],
                 "ietf-network-inventory-software:installed-software": [
@@ -48,22 +43,55 @@
                     "installation-time": "2024-10-01T14:10:00Z"
                   }
                 ]
+              },
+              {
+                "component-id": "example:feature-telemetry",
+                "class": "ietf-network-inventory-software:software-module",
+                "description": "Telemetry feature software module",
+                "software-rev": [
+                  {
+                    "name": "telemetry-module",
+                    "revision": "1.5.1",
+                    "patch": [],
+                    "ietf-network-inventory-software:installation-time": "2024-08-02T09:00:00Z",
+                    "ietf-network-inventory-software:activation-time": "2024-08-02T09:05:00Z"
+                  }
+                ],
+                "ietf-network-inventory-software:installed-software": [
+                  {
+                    "name": "telemetry-module",
+                    "revision": "1.6.0",
+                    "status": "ietf-network-inventory-software:software-installed",
+                    "installation-time": "2024-11-02T11:30:00Z"
+                  }
+                ]
               }
             ]
-          }
+          },
+          "ietf-network-inventory-software:installed-software": [
+            {
+              "name": "example-os-P4",
+              "revision": "P4",
+              "status": "ietf-network-inventory-software:software-installed",
+              "installation-time": "2024-10-01T14:00:00Z"
+            }
+          ]
         },
         {
           "ne-id": "example:NE-02",
           "ne-type": "ietf-network-inventory:ne-physical",
+          "name": "router-os-upgrade-pending-reload",
+          "description": "Physical router with new OS version installed, pending reload for activation",
           "software-rev": [
             {
               "name": "example-os",
               "revision": "7.9.2",
+              "patch": [],
               "ietf-network-inventory-software:installation-time": "2024-08-01T12:00:00Z",
-              "ietf-network-inventory-software:activation-time": "2024-08-01T12:05:00Z",
-              "patch": []
+              "ietf-network-inventory-software:activation-time": "2024-08-01T12:05:00Z"
             }
           ],
+          "components": {},
           "ietf-network-inventory-software:installed-software": [
             {
               "name": "example-os",
@@ -75,22 +103,23 @@
         },
         {
           "ne-id": "example:NE-03",
-          "ne-type": "ietf-network-inventory-software:ne-vm",
+          "ne-type": "ietf-network-inventory-software:ne-software-based",
           "name": "vrouter-01",
-          "description": "Virtual router deployed as VM (VNF)",
+          "description": "Virtual router deployed as VM (VNF) to demonstrate software-based NE",
           "software-rev": [
             {
               "name": "vrouter-os",
               "revision": "24.03",
-              "ietf-network-inventory-software:installation-time": "2024-09-10T08:00:00Z",
-              "ietf-network-inventory-software:activation-time": "2024-09-10T08:15:00Z",
               "patch": [
                 {
                   "revision": "Hotfix-05"
                 }
-              ]
+              ],
+              "ietf-network-inventory-software:installation-time": "2024-09-10T08:00:00Z",
+              "ietf-network-inventory-software:activation-time": "2024-09-10T08:15:00Z"
             }
           ],
+          "components": {},
           "ietf-network-inventory-software:installed-software": [
             {
               "name": "vrouter-os",
@@ -109,22 +138,22 @@
             {
               "name": "example-os",
               "revision": "7.9.2",
+              "patch": [],
               "ietf-network-inventory-software:installation-time": "2024-08-01T12:00:00Z",
-              "ietf-network-inventory-software:activation-time": "2024-08-01T12:05:00Z",
-              "patch": []
+              "ietf-network-inventory-software:activation-time": "2024-08-01T12:05:00Z"
             },
             {
               "name": "os-hotfix-P5",
               "revision": "P5",
+              "patch": [],
               "ietf-network-inventory-software:installation-time": "2024-11-10T15:00:00Z",
-              "ietf-network-inventory-software:activation-time": "2024-11-10T15:10:00Z",
-              "patch": []
+              "ietf-network-inventory-software:activation-time": "2024-11-10T15:10:00Z"
             }
           ],
+          "components": {},
           "ietf-network-inventory-software:installed-software": []
         }
       ]
     }
   }
 }
-
