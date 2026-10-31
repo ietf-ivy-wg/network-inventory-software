@@ -96,6 +96,8 @@ Please apply the following replacements:
 
 ## Terminology and Notations
 
+{::boilerplate bcp14}
+
 The following terms are defined in {{!RFC7950}} and are not
 redefined here:
 
