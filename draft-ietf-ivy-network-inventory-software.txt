@@ -97,7 +97,7 @@ Table of Contents
    software components on a managed network domain.  The software-based
    NEs are network devices that support network protocols and functions
    (e.g., routers, firewalls, and controllers), which can reside in any
-   network or compute environment).
+   network or compute environment.
 
    [I-D.ietf-ivy-network-inventory-yang] defines the base Network
    Inventory YANG data model for physical NEs and hardware components of
@@ -220,7 +220,7 @@ Table of Contents
    *  NE-level "software-rev": Describes the main system software
       revision of the network element, such as the network operating
       system release of the whole device.  Only running software is
-      reported here, consistent with the base model.  The augmented
+      reported here, consistent with the base model.  The augmented data
       nodes include "installation-time" and "activation-time".
 
    *  Component-level "software-rev": Describes the independent software
@@ -272,7 +272,7 @@ Table of Contents
 
    In the base Network Inventory YANG data model, "ne-type" is a YANG
    identity that describes the type of the network element and only the
-   "ne-physical" identity" is defined.  This document adds "ne-software-
+   "ne-physical" identity is defined.  This document adds "ne-software-
    based" identity for software-based NEs.
 
    The base Network Inventory data model also defines common inventory
@@ -647,7 +647,7 @@ Table of Contents
    *  "/nwi:network-elements/nwi:network-
       element/nwi:components/nwi:component/nwis:installed-software"
 
-   These extensions add installation and activation timestamps for
+   This extension adds installation and activation timestamps for
    running software, plus a separate "installed-software" list for both
    NE-level and component-level.  Disclosure of detailed software
    versions, patch levels, and lifecycle timestamps can reveal unpatched
@@ -785,7 +785,7 @@ Appendix A.  Examples of Software Attributes
       revision (24.06) installed but not yet activated.
 
    Scenario 4:  Whole-device base software (example-os) running, with an
-      independent hotfix (os-hotfix-P5) modelled as a separate top-level
+      independent hotfix (os-hotfix-P5) modeled as a separate top-level
       software-rev entry.
 
    =============== NOTE: '\' line wrapping per RFC 8792 ================

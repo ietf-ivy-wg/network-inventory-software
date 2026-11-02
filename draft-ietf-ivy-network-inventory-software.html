@@ -1241,7 +1241,7 @@ installation and activation timestamps for running software.<a href="#section-ab
       software components on a managed network domain. The software-based
       NEs are network devices that support network
       protocols and functions (e.g., routers, firewalls, and controllers),
-      which can reside in any network or compute environment).<a href="#section-1-1" class="pilcrow">¶</a></p>
+      which can reside in any network or compute environment.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2"><span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>  defines the base
       Network Inventory YANG data model for physical NEs and
       hardware components of NEs. Examples of hardware components could be
@@ -1391,7 +1391,7 @@ The network inventory software data model adds more software specific attributes
 revision of the network element, such as the network
 operating system release of the whole device. Only running
 software is reported here, consistent with the base model.
-The augmented nodes   include "installation-time" and "activation-time".<a href="#section-2.2-3.1.1" class="pilcrow">¶</a></p>
+The augmented data nodes include "installation-time" and "activation-time".<a href="#section-2.2-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.2-3.2">
             <p id="section-2.2-3.2.1">Component-level "software-rev": Describes the independent software
@@ -1457,7 +1457,7 @@ module: ietf-network-inventory-software
         </h3>
 <p id="section-2.3-1">In the base Network Inventory YANG data model, "ne-type" is a YANG
 identity that describes the type of the network element and only the
-"ne-physical" identity" is defined. This document adds
+"ne-physical" identity is defined. This document adds
 "ne-software-based" identity for software-based NEs.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
 <p id="section-2.3-2">The base Network Inventory data model also defines common inventory
 attributes, including the software version, patch versions, product
@@ -1833,7 +1833,7 @@ notification) to these data nodes. Specifically, the following subtrees and data
           <p id="section-5-6.6.1">"/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwis:installed-software"<a href="#section-5-6.6.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-5-7">These extensions add installation and activation timestamps for
+<p id="section-5-7">This extension adds installation and activation timestamps for
 running software, plus a separate "installed-software" list for both
 NE-level and component-level. Disclosure of detailed
 software versions, patch levels, and lifecycle timestamps can reveal
@@ -2000,7 +2000,7 @@ Reference:  RFC XXXX
 <dt id="appendix-A-2.7">Scenario 4:</dt>
         <dd style="margin-left: 1.5em" id="appendix-A-2.8">
           <p id="appendix-A-2.8.1">Whole-device base software (example-os) running, with an independent hotfix (os-hotfix-P5)
-modelled as a separate top-level software-rev entry.<a href="#appendix-A-2.8.1" class="pilcrow">¶</a></p>
+modeled as a separate top-level software-rev entry.<a href="#appendix-A-2.8.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
