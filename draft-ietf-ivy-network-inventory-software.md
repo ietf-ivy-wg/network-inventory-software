@@ -75,7 +75,7 @@ The management of software-based NE and software components information
       also adds some software-specific attributes of software-based NEs (such as
       controllers, virtual routers, and virtual firewalls) and software
       components (such as operating system, software modules, BIOS, and boot
-      loader). Refer to {{sec-modul}}.
+      loader). Refer to {{sec-module}}.
 
 The Network Inventory software model is classified as a network model ({{Section 4 of  ?RFC8309}}).
 
@@ -328,7 +328,7 @@ Reference:  RFC XXXX
 
 This appendix illustrates, by means of four typical scenarios, how to
  populate the software-specific nodes defined in
- "ietf-network-inventory-software" ({{sec-software}}).
+ "ietf-network-inventory-software" ({{sec-module}}).
 
 Scenario 1:
 : Whole-device base software (example-os) running, with a
