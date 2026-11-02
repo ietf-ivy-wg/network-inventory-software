@@ -59,7 +59,7 @@ The Network Inventory consists of the physical and software-based
       software components on a managed network domain. The software-based
       NEs are network devices that support network
       protocols and functions (e.g., routers, firewalls, and controllers),
-      which can reside in any network or compute environment).
+      which can reside in any network or compute environment.
 
  {{!I-D.ietf-ivy-network-inventory-yang}}  defines the base
       Network Inventory YANG data model for physical NEs and
@@ -157,7 +157,7 @@ The data model applies software extension attributes at two levels:
   revision of the network element, such as the network
   operating system release of the whole device. Only running
   software is reported here, consistent with the base model.
-  The augmented nodes	include "installation-time" and "activation-time".
+  The augmented data nodes include "installation-time" and "activation-time".
 
 - Component-level "software-rev": Describes the independent software
   or firmware revision of an individual component, such as a line
@@ -184,7 +184,7 @@ In addition, the data model introduces:
 
 In the base Network Inventory YANG data model, "ne-type" is a YANG
 identity that describes the type of the network element and only the
-"ne-physical" identity" is defined. This document adds
+"ne-physical" identity is defined. This document adds
 "ne-software-based" identity for software-based NEs.
 
 The base Network Inventory data model also defines common inventory
@@ -292,7 +292,7 @@ notification) to these data nodes. Specifically, the following subtrees and data
 - "/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwi:software-rev/nwi:patch"
 - "/nwi:network-elements/nwi:network-element/nwi:components/nwi:component/nwis:installed-software"
 
-These extensions add installation and activation timestamps for
+This extension adds installation and activation timestamps for
 running software, plus a separate "installed-software" list for both
 NE-level and component-level. Disclosure of detailed
 software versions, patch levels, and lifecycle timestamps can reveal
@@ -348,7 +348,7 @@ Scenario 3:
 
 Scenario 4:
 : Whole-device base software (example-os) running, with an independent hotfix (os-hotfix-P5)
-modelled as a separate top-level software-rev entry.
+modeled as a separate top-level software-rev entry.
 
 ~~~~ json
 {::include-fold ./software-example.json}
